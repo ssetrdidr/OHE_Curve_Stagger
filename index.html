@@ -245,7 +245,7 @@
           <!-- Height of Contact Wire Hcw -->
           <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80">
             <div class="flex justify-between items-center mb-1">
-              <label for="inpHcw" class="text-xs font-semibold text-slate-700">Height of Contact Wire (<span class="font-mono text-sky-700">Hcw</span>)</label>
+              <label for="inpHcw" class="text-xs font-semibold text-slate-700">Plumb Measured Height of Contact Wire (<span class="font-mono text-sky-700">Hcw</span>)</label>
               <div class="flex items-center gap-1">
                 <input id="inpHcw" type="number" min="4500" max="7600" step="10" value="5340" class="w-20 px-2 py-0.5 text-right font-mono text-xs font-bold border border-slate-300 rounded bg-white" />
                 <span class="text-xs font-mono text-slate-500">mm</span>
@@ -567,6 +567,8 @@
 
       const hCorrExact = (Math.abs(state.mVal) * effectiveSe) / state.gauge;
       const hCorrMm = hCorrExact.toFixed(1);
+      const hPclExact = state.hcw * Math.cos((trueAngleDeg * Math.PI) / 180);
+      const hPclMm = hPclExact.toFixed(1);
 
       return {
         effectiveSe,
@@ -578,7 +580,9 @@
         deviation,
         trueAngleDeg,
         hCorrExact,
-        hCorrMm
+        hCorrMm,
+        hPclExact,
+        hPclMm
       };
     }
 
@@ -766,9 +770,9 @@
         <div>• Track Centre (T℄) to Plumb Point (Cw) = <strong>${fmtSigned(state.mVal)} mm</strong> (${state.mVal >= 0 ? 'Away from Mast' : 'Towards Mast'})</div>
         <div class="border-t border-slate-200 pt-1.5">${step3Html}</div>
         <div class="border-t border-slate-200 pt-1.5">
-          <strong class="text-purple-700">Step 4 (Vertical Height Addition at Cw due to Cant):</strong><br/>
-          • Vert Add = (|M| × Se) / G = (${Math.abs(state.mVal)} × ${calc.effectiveSe}) / ${state.gauge} = <span class="text-purple-900 font-bold">${calc.hCorrMm} mm</span><br/>
-          <span class="text-[10.5px] text-slate-500">• Add ${calc.hCorrMm} mm to physical plumb height measured from Cw on gauge to contact wire.</span>
+          <strong class="text-purple-700">Step 4 (Calculated PCL Length from Inclined Rail Level to 0 of Panto):</strong><br/>
+          • H_PCL = Hcw × cos(θ) = ${state.hcw} × cos(${calc.trueAngleDeg.toFixed(2)}°) = <span class="text-purple-900 font-bold">${calc.hPclMm} mm</span><br/>
+          <span class="text-[10.5px] text-slate-500">• Perpendicular distance along P℄ axis from Inclined Rail Level to 0 (P℄).</span>
         </div>
       `;
 
@@ -1290,54 +1294,56 @@
         fill: pal.muted, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10'
       }, `(${(state.hcw / 1000).toFixed(2)} m)`));
 
-      // VERTICAL HEIGHT ADDITION AT Cw DUE TO CANT: ΔH_Cw = (|M| * Se) / G
-      if (calc.effectiveSe > 0 && Math.abs(state.mVal) > 5) {
-        const cwVertGroup = svgEl('g');
-        const horizRefY = railMidY; // Horizontal level through T℄
-        const cwVertX = cwX + (state.mVal >= 0 ? -28 : 28); // Offset to avoid overlapping plumb line
+      // CALCULATED LENGTH OF PCL FROM INCLINED RAIL LEVEL TO 0 OF PANTO (DEPICTED TOWARDS HIGHER RAIL SIDE)
+      const pclDimGroup = svgEl('g');
+      // Higher rail side direction perpendicular to PCL:
+      // If mastSide === 'inside', higher rail is on Left (towards -X in inclined plane).
+      // If mastSide === 'outside', higher rail is on Right (towards +X in inclined plane).
+      // Offset direction vector along Inclined Rail Level towards higher rail:
+      const offsetSign = (state.mastSide === 'inside' || state.mastSide === 'tangent') ? -1 : 1;
+      const offsetDist = 55; // Offset distance from PCL axis towards higher rail side
 
-        // Extension dashed line from horizontal datum to Cw
-        cwVertGroup.appendChild(svgEl('line', {
-          x1: cwX, y1: horizRefY, x2: cwVertX + (state.mVal >= 0 ? -4 : 4), y2: horizRefY,
-          stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.85'
-        }));
-        cwVertGroup.appendChild(svgEl('line', {
-          x1: cwX, y1: cwGaugeY, x2: cwVertX + (state.mVal >= 0 ? -4 : 4), y2: cwGaugeY,
-          stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.85'
-        }));
+      // Offset start point at Inclined Rail Level (pcProjRail Point) and end point at 0 (P℄):
+      const dimStartX = pcProjRailX + offsetSign * offsetDist * cosA;
+      const dimStartY = pcProjRailY + offsetSign * offsetDist * sinA;
+      const dimEndX = pcZeroX + offsetSign * offsetDist * cosA;
+      const dimEndY = pcZeroY + offsetSign * offsetDist * sinA;
 
-        const vertDistPx = Math.abs(cwGaugeY - horizRefY);
-        if (vertDistPx >= 8) {
-          cwVertGroup.appendChild(svgEl('line', {
-            x1: cwVertX, y1: horizRefY, x2: cwVertX, y2: cwGaugeY,
-            stroke: pal.vertPantoColor, 'stroke-width': '1.8',
-            'marker-start': 'url(#arrowPurpleStart)',
-            'marker-end': 'url(#arrowPurpleEnd)'
-          }));
-        } else {
-          cwVertGroup.appendChild(svgEl('line', {
-            x1: cwVertX, y1: horizRefY - 6, x2: cwVertX, y2: cwGaugeY + 6,
-            stroke: pal.vertPantoColor, 'stroke-width': '1.8'
-          }));
-        }
+      // Extension dashed lines from PCL axis to dimension line:
+      pclDimGroup.appendChild(svgEl('line', {
+        x1: pcProjRailX, y1: pcProjRailY, x2: dimStartX + offsetSign * 6 * cosA, y2: dimStartY + offsetSign * 6 * sinA,
+        stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
+      }));
+      pclDimGroup.appendChild(svgEl('line', {
+        x1: pcZeroX, y1: pcZeroY, x2: dimEndX + offsetSign * 6 * cosA, y2: dimEndY + offsetSign * 6 * sinA,
+        stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
+      }));
 
-        const cwVertMidY = (horizRefY + cwGaugeY) / 2;
-        const cwVertLabel = `Vert Add = ${calc.hCorrMm} mm`;
-        const vBoxW = cwVertLabel.length * 7.2 + 10;
-        const labelX = cwVertX + (state.mVal >= 0 ? -vBoxW / 2 - 4 : vBoxW / 2 + 4);
+      // Dimension line parallel to PCL:
+      pclDimGroup.appendChild(svgEl('line', {
+        x1: dimStartX, y1: dimStartY, x2: dimEndX, y2: dimEndY,
+        stroke: pal.vertPantoColor, 'stroke-width': '1.8',
+        'marker-start': 'url(#arrowPurpleStart)',
+        'marker-end': 'url(#arrowPurpleEnd)'
+      }));
 
-        cwVertGroup.appendChild(svgEl('rect', {
-          x: labelX - vBoxW / 2, y: cwVertMidY - 10, width: vBoxW, height: 16, rx: 3,
-          fill: bp ? '#0b192c' : '#ffffff', 'fill-opacity': '0.94',
-          stroke: pal.vertPantoColor, 'stroke-width': '0.9'
-        }));
-        cwVertGroup.appendChild(svgEl('text', {
-          x: labelX, y: cwVertMidY + 1.5, 'text-anchor': 'middle',
-          fill: pal.vertPantoColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10.5', 'font-weight': '800'
-        }, cwVertLabel));
+      // Label at midpoint:
+      const pclMidX = (dimStartX + dimEndX) / 2;
+      const pclMidY = (dimStartY + dimEndY) / 2;
+      const pclLabel = `P℄ Length = ${calc.hPclMm} mm`;
+      const pclBoxW = pclLabel.length * 7.2 + 12;
 
-        layers.dims.appendChild(cwVertGroup);
-      }
+      pclDimGroup.appendChild(svgEl('rect', {
+        x: pclMidX - pclBoxW / 2, y: pclMidY - 10, width: pclBoxW, height: 18, rx: 3,
+        fill: bp ? '#0b192c' : '#ffffff', 'fill-opacity': '0.95',
+        stroke: pal.vertPantoColor, 'stroke-width': '1'
+      }));
+      pclDimGroup.appendChild(svgEl('text', {
+        x: pclMidX, y: pclMidY + 3, 'text-anchor': 'middle',
+        fill: pal.vertPantoColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10.5', 'font-weight': '800'
+      }, pclLabel));
+
+      layers.dims.appendChild(pclDimGroup);
 
       // TITLE BLOCK & STAMPS
       layers.title.appendChild(svgEl('rect', {
