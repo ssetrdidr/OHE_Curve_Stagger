@@ -565,6 +565,9 @@
       const deviation = existingStagger - state.targetStagger;
       const trueAngleDeg = (Math.asin(Math.min(effectiveSe / state.gauge, 0.99)) * 180) / Math.PI;
 
+      const hCorrExact = (Math.abs(state.mVal) * effectiveSe) / state.gauge;
+      const hCorrMm = hCorrExact.toFixed(1);
+
       return {
         effectiveSe,
         sdExact,
@@ -573,7 +576,9 @@
         existingStagger,
         operationSign,
         deviation,
-        trueAngleDeg
+        trueAngleDeg,
+        hCorrExact,
+        hCorrMm
       };
     }
 
@@ -760,6 +765,11 @@
         <div class="border-t border-slate-200 pt-1.5"><strong class="text-sky-700">Step 2 (Rail Gauge Plumb Measurement ±M):</strong></div>
         <div>• Track Centre (T℄) to Plumb Point (Cw) = <strong>${fmtSigned(state.mVal)} mm</strong> (${state.mVal >= 0 ? 'Away from Mast' : 'Towards Mast'})</div>
         <div class="border-t border-slate-200 pt-1.5">${step3Html}</div>
+        <div class="border-t border-slate-200 pt-1.5">
+          <strong class="text-purple-700">Step 4 (Vertical Height Addition at Cw due to Cant):</strong><br/>
+          • Vert Add = (|M| × Se) / G = (${Math.abs(state.mVal)} × ${calc.effectiveSe}) / ${state.gauge} = <span class="text-purple-900 font-bold">${calc.hCorrMm} mm</span><br/>
+          <span class="text-[10.5px] text-slate-500">• Add ${calc.hCorrMm} mm to physical plumb height measured from Cw on gauge to contact wire.</span>
+        </div>
       `;
 
       const mWarnEl = document.getElementById('mOppositeSignWarning');
@@ -1280,93 +1290,54 @@
         fill: pal.muted, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10'
       }, `(${(state.hcw / 1000).toFixed(2)} m)`));
 
-      // VERTICAL MEASURE PARALLEL TO PANTOGRAPH AXIS (SHOWN AT BOTH PANTO LEVEL & RAIL LEVEL WITH UNIQUE PURPLE COLOR)
-      const pantoVertGroup = svgEl('g');
-      const pantoAxisUnitX = sinA;
-      const pantoAxisUnitY = -cosA;
-      const pantoOffsetNormalX = -cosA;
-      const pantoOffsetNormalY = -sinA;
-      const pantoOffsetPx = 24;
+      // VERTICAL HEIGHT ADDITION AT Cw DUE TO CANT: ΔH_Cw = (|M| * Se) / G
+      if (calc.effectiveSe > 0 && Math.abs(state.mVal) > 5) {
+        const cwVertGroup = svgEl('g');
+        const horizRefY = railMidY; // Horizontal level through T℄
+        const cwVertX = cwX + (state.mVal >= 0 ? -28 : 28); // Offset to avoid overlapping plumb line
 
-      // 1. AT PANTO LEVEL (Contact Wire <-> 0 (P℄))
-      const sCwPan = (cwX - pcZeroX) * pantoAxisUnitX + (cwCenterY - pcZeroY) * pantoAxisUnitY;
-      const pv1X = pcZeroX + sCwPan * pantoAxisUnitX + pantoOffsetPx * pantoOffsetNormalX;
-      const pv1Y = pcZeroY + sCwPan * pantoAxisUnitY + pantoOffsetPx * pantoOffsetNormalY;
-      const pv2X = pcZeroX + pantoOffsetPx * pantoOffsetNormalX;
-      const pv2Y = pcZeroY + pantoOffsetPx * pantoOffsetNormalY;
-
-      pantoVertGroup.appendChild(svgEl('line', {
-        x1: cwX, y1: cwCenterY, x2: pv1X, y2: pv1Y,
-        stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
-      }));
-      pantoVertGroup.appendChild(svgEl('line', {
-        x1: pcZeroX, y1: pcZeroY, x2: pv2X, y2: pv2Y,
-        stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
-      }));
-
-      if (Math.hypot(pv2X - pv1X, pv2Y - pv1Y) >= 12) {
-        pantoVertGroup.appendChild(svgEl('line', {
-          x1: pv1X, y1: pv1Y, x2: pv2X, y2: pv2Y,
-          stroke: pal.vertPantoColor, 'stroke-width': '1.8',
-          'marker-start': 'url(#arrowPurpleStart)',
-          'marker-end': 'url(#arrowPurpleEnd)'
+        // Extension dashed line from horizontal datum to Cw
+        cwVertGroup.appendChild(svgEl('line', {
+          x1: cwX, y1: horizRefY, x2: cwVertX + (state.mVal >= 0 ? -4 : 4), y2: horizRefY,
+          stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.85'
         }));
-      }
-
-      const pvMidX = (pv1X + pv2X) / 2 + 14 * pantoOffsetNormalX;
-      const pvMidY = (pv1Y + pv2Y) / 2 + 14 * pantoOffsetNormalY;
-      const pantoAxisLabel = `Stagger = ${Math.abs(calc.existingStagger)} mm`;
-      const pvBoxW = pantoAxisLabel.length * 7.5 + 12;
-
-      pantoVertGroup.appendChild(svgEl('rect', {
-        x: pvMidX - pvBoxW / 2, y: pvMidY - 11, width: pvBoxW, height: 15, rx: 3,
-        fill: bp ? '#0b192c' : '#ffffff', 'fill-opacity': '0.94',
-        stroke: pal.vertPantoColor, 'stroke-width': '0.9'
-      }));
-      pantoVertGroup.appendChild(svgEl('text', {
-        x: pvMidX, y: pvMidY, 'text-anchor': 'middle',
-        fill: pal.vertPantoColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '11.5', 'font-weight': '800'
-      }, pantoAxisLabel));
-
-      // 2. AT RAIL LEVEL (Cw Plumb Mark <-> P℄ Plumb Projection)
-      const sCwRail = (cwX - pcProjRailX) * pantoAxisUnitX + (cwGaugeY - pcProjRailY) * pantoAxisUnitY;
-      const rv1X = pcProjRailX + sCwRail * pantoAxisUnitX + pantoOffsetPx * pantoOffsetNormalX;
-      const rv1Y = pcProjRailY + sCwRail * pantoAxisUnitY + pantoOffsetPx * pantoOffsetNormalY;
-      const rv2X = pcProjRailX + pantoOffsetPx * pantoOffsetNormalX;
-      const rv2Y = pcProjRailY + pantoOffsetPx * pantoOffsetNormalY;
-
-      pantoVertGroup.appendChild(svgEl('line', {
-        x1: cwX, y1: cwGaugeY, x2: rv1X, y2: rv1Y,
-        stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
-      }));
-      pantoVertGroup.appendChild(svgEl('line', {
-        x1: pcProjRailX, y1: pcProjRailY, x2: rv2X, y2: rv2Y,
-        stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
-      }));
-
-      if (Math.hypot(rv2X - rv1X, rv2Y - rv1Y) >= 12) {
-        pantoVertGroup.appendChild(svgEl('line', {
-          x1: rv1X, y1: rv1Y, x2: rv2X, y2: rv2Y,
-          stroke: pal.vertPantoColor, 'stroke-width': '1.8',
-          'marker-start': 'url(#arrowPurpleStart)',
-          'marker-end': 'url(#arrowPurpleEnd)'
+        cwVertGroup.appendChild(svgEl('line', {
+          x1: cwX, y1: cwGaugeY, x2: cwVertX + (state.mVal >= 0 ? -4 : 4), y2: cwGaugeY,
+          stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.85'
         }));
+
+        const vertDistPx = Math.abs(cwGaugeY - horizRefY);
+        if (vertDistPx >= 8) {
+          cwVertGroup.appendChild(svgEl('line', {
+            x1: cwVertX, y1: horizRefY, x2: cwVertX, y2: cwGaugeY,
+            stroke: pal.vertPantoColor, 'stroke-width': '1.8',
+            'marker-start': 'url(#arrowPurpleStart)',
+            'marker-end': 'url(#arrowPurpleEnd)'
+          }));
+        } else {
+          cwVertGroup.appendChild(svgEl('line', {
+            x1: cwVertX, y1: horizRefY - 6, x2: cwVertX, y2: cwGaugeY + 6,
+            stroke: pal.vertPantoColor, 'stroke-width': '1.8'
+          }));
+        }
+
+        const cwVertMidY = (horizRefY + cwGaugeY) / 2;
+        const cwVertLabel = `Vert Add = ${calc.hCorrMm} mm`;
+        const vBoxW = cwVertLabel.length * 7.2 + 10;
+        const labelX = cwVertX + (state.mVal >= 0 ? -vBoxW / 2 - 4 : vBoxW / 2 + 4);
+
+        cwVertGroup.appendChild(svgEl('rect', {
+          x: labelX - vBoxW / 2, y: cwVertMidY - 10, width: vBoxW, height: 16, rx: 3,
+          fill: bp ? '#0b192c' : '#ffffff', 'fill-opacity': '0.94',
+          stroke: pal.vertPantoColor, 'stroke-width': '0.9'
+        }));
+        cwVertGroup.appendChild(svgEl('text', {
+          x: labelX, y: cwVertMidY + 1.5, 'text-anchor': 'middle',
+          fill: pal.vertPantoColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10.5', 'font-weight': '800'
+        }, cwVertLabel));
+
+        layers.dims.appendChild(cwVertGroup);
       }
-
-      const rvMidX = (rv1X + rv2X) / 2 + 14 * pantoOffsetNormalX;
-      const rvMidY = (rv1Y + rv2Y) / 2 + 14 * pantoOffsetNormalY;
-
-      pantoVertGroup.appendChild(svgEl('rect', {
-        x: rvMidX - pvBoxW / 2, y: rvMidY - 11, width: pvBoxW, height: 15, rx: 3,
-        fill: bp ? '#0b192c' : '#ffffff', 'fill-opacity': '0.94',
-        stroke: pal.vertPantoColor, 'stroke-width': '0.9'
-      }));
-      pantoVertGroup.appendChild(svgEl('text', {
-        x: rvMidX, y: rvMidY, 'text-anchor': 'middle',
-        fill: pal.vertPantoColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '11.5', 'font-weight': '800'
-      }, pantoAxisLabel));
-
-      layers.dims.appendChild(pantoVertGroup);
 
       // TITLE BLOCK & STAMPS
       layers.title.appendChild(svgEl('rect', {
