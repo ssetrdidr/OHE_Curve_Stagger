@@ -1334,14 +1334,15 @@
       const pclMidY = (dimStartY + dimEndY) / 2;
       const pclLabel = `H_PCL (Cal. Hcw) = ${calc.hPclMm} mm`;
       const pclBoxW = pclLabel.length * 7.2 + 12;
+      const pclLabelX = pclMidX + 12; // beside the purple line, on the free side
 
       pclDimGroup.appendChild(svgEl('rect', {
-        x: pclMidX - pclBoxW / 2, y: pclMidY - 10, width: pclBoxW, height: 18, rx: 3,
+        x: pclLabelX, y: pclMidY - 10, width: pclBoxW, height: 18, rx: 3,
         fill: bp ? '#0b192c' : '#ffffff', 'fill-opacity': '0.95',
         stroke: pal.vertPantoColor, 'stroke-width': '1'
       }));
       pclDimGroup.appendChild(svgEl('text', {
-        x: pclMidX, y: pclMidY + 3, 'text-anchor': 'middle',
+        x: pclLabelX + 6, y: pclMidY + 3, 'text-anchor': 'start',
         fill: pal.vertPantoColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10.5', 'font-weight': '800'
       }, pclLabel));
 
