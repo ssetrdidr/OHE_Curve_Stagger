@@ -2,19 +2,13 @@
   "name": "OHE Stagger & Cant CAD Analyzer",
   "short_name": "OHE Stagger",
   "description": "Indian Railways TRD — Contact Wire Stagger & Cant CAD Analyzer by Sandeep Mushini",
-  "start_url": "./index.html?v=3",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#0b192c",
   "theme_color": "#0b192c",
   "icons": [
-    {
-      "src": "icon-180.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any"
-    },
     {
       "src": "icon-192.png",
       "sizes": "192x192",
