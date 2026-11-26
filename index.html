@@ -134,6 +134,10 @@
 
       <!-- Toolbar Actions -->
       <div class="flex flex-wrap items-center gap-2">
+        <button id="installAppBtn" type="button" style="display:none;" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition shadow">
+          📲 Install App
+        </button>
+
         <button id="btnSheetTheme" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 transition flex items-center gap-1.5">
           <span id="themeDot" class="w-2.5 h-2.5 rounded-full bg-white border border-slate-400"></span>
           <span id="themeLabel">CAD Sheet: White</span>
@@ -1538,5 +1542,30 @@
       });
     }
   </script>
+
+<!-- Install App button logic (Chrome/Edge/Android) -->
+<script>
+  let deferredPrompt = null;
+  const installBtn = document.getElementById("installAppBtn");
+
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = "inline-block";
+  });
+
+  installBtn.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    installBtn.style.display = "none";
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredPrompt = null;
+    installBtn.style.display = "none";
+  });
+</script>
 </body>
 </html>
