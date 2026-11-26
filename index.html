@@ -145,11 +145,8 @@
 
         <button id="btnExaggeration" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/50 text-amber-300 transition flex items-center gap-1.5">
           <span>Cant Tilt Scale:</span>
-          <strong id="tiltScaleLabel" class="font-mono">1× True Scale</strong>
+          <strong id="tiltScaleLabel" class="font-mono">4× Clarity</strong>
         </button>
-        <div id="tiltExaggerationNote" style="display:none;" class="w-full mt-1 px-2.5 py-1 rounded bg-amber-950/80 border border-amber-500/40 text-[11px] font-mono text-amber-200 leading-snug">
-          Note: 4× visual exaggeration tilts P℄ more steeply over height Hcw, making wire/0 position appear shifted—actual field geometry does not jump.
-        </div>
 
         <button id="btnResetPreset" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 transition">
           Reset Bheema Bridge
@@ -274,6 +271,9 @@
               <span>0 (At T℄)</span>
               <span>+M (Away from Mast)</span>
             </div>
+            <div id="mOppositeSignWarning" style="display:none;" class="mt-2 px-2.5 py-1.5 rounded bg-amber-100 border border-amber-400 text-[11px] font-mono text-amber-950 leading-snug">
+              <strong>Note:</strong> ±M is set opposite to the selected curve side—contact wire plumb line moves across 0 (P℄).
+            </div>
           </div>
 
           <!-- Target Design Stagger (Reference) -->
@@ -336,7 +336,7 @@
             <span id="cadHeaderTitle" class="font-semibold text-white">DWG: BHEEMA BRIDGE | UP LINE | MAST 257/03</span>
           </div>
           <div class="flex items-center gap-3 text-[11px] text-slate-300">
-            <span id="cadHeaderScale">CANT ANGLE: 1.78° (VISUAL 1×)</span>
+            <span id="cadHeaderScale">CANT ANGLE: 1.78° (VISUAL 4×)</span>
             <span>|</span>
             <span>ALL DIMS IN MM</span>
           </div>
@@ -377,6 +377,12 @@
               </marker>
               <marker id="arrowRoseEnd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
                 <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#e11d48" />
+              </marker>
+              <marker id="arrowPurpleStart" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 10 1.5 L 0 5 L 10 8.5 z" fill="#9333ea" />
+              </marker>
+              <marker id="arrowPurpleEnd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#9333ea" />
               </marker>
             </defs>
 
@@ -481,7 +487,7 @@
       mVal: 133,          // ±M from T℄ to Cw in mm
       targetStagger: 300,
       blueprintMode: false,
-      tiltExaggeration: 1
+      tiltExaggeration: 4
     };
 
     // DOM Element References
@@ -756,9 +762,12 @@
         <div class="border-t border-slate-200 pt-1.5">${step3Html}</div>
       `;
 
-      const tiltNoteEl = document.getElementById('tiltExaggerationNote');
-      if (tiltNoteEl) {
-        tiltNoteEl.style.display = state.tiltExaggeration === 4 ? 'block' : 'none';
+      const mWarnEl = document.getElementById('mOppositeSignWarning');
+      if (mWarnEl) {
+        const isOpposite =
+          (state.mastSide === 'inside' && state.mVal < 0) ||
+          (state.mastSide === 'outside' && state.mVal > 0);
+        mWarnEl.style.display = isOpposite ? 'block' : 'none';
       }
 
       els.cadHeaderTitle.textContent = `DWG: ${state.section.toUpperCase()} | ${state.line.toUpperCase()} | MAST ${state.mast.toUpperCase()}`;
@@ -787,6 +796,7 @@
         perpColor: '#38bdf8',
         plumbColor: '#fbbf24',
         dotColor: '#c084fc',
+        vertPantoColor: '#c084fc',
         seDatumColor: '#94a3b8',
         pantoStroke: '#e2e8f0',
         pantoFill: '#334155',
@@ -807,6 +817,7 @@
         perpColor: '#0284c7',
         plumbColor: '#d97706',
         dotColor: '#7c3aed',
+        vertPantoColor: '#9333ea',
         seDatumColor: '#64748b',
         pantoStroke: '#0f172a',
         pantoFill: '#475569',
@@ -1269,93 +1280,93 @@
         fill: pal.muted, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10'
       }, `(${(state.hcw / 1000).toFixed(2)} m)`));
 
-      // 1. DISTANCE ALONG PANTOGRAPH AXIS: CONTACT WIRE DOT <-> 0 (P℄) DOT
-      const pantoSpanGroup = svgEl('g');
-      const pantoOffsetDist = 20;
-      const pantoNormalX = -sinA;
-      const pantoNormalY = -cosA;
+      // VERTICAL MEASURE PARALLEL TO PANTOGRAPH AXIS (SHOWN AT BOTH PANTO LEVEL & RAIL LEVEL WITH UNIQUE PURPLE COLOR)
+      const pantoVertGroup = svgEl('g');
+      const pantoAxisUnitX = sinA;
+      const pantoAxisUnitY = -cosA;
+      const pantoOffsetNormalX = -cosA;
+      const pantoOffsetNormalY = -sinA;
+      const pantoOffsetPx = 24;
 
-      const p1Ax = cwX + pantoOffsetDist * pantoNormalX;
-      const p1Ay = cwCenterY + pantoOffsetDist * pantoNormalY;
-      const p2Ax = pcZeroX + pantoOffsetDist * pantoNormalX;
-      const p2Ay = pcZeroY + pantoOffsetDist * pantoNormalY;
+      // 1. AT PANTO LEVEL (Contact Wire <-> 0 (P℄))
+      const sCwPan = (cwX - pcZeroX) * pantoAxisUnitX + (cwCenterY - pcZeroY) * pantoAxisUnitY;
+      const pv1X = pcZeroX + sCwPan * pantoAxisUnitX + pantoOffsetPx * pantoOffsetNormalX;
+      const pv1Y = pcZeroY + sCwPan * pantoAxisUnitY + pantoOffsetPx * pantoOffsetNormalY;
+      const pv2X = pcZeroX + pantoOffsetPx * pantoOffsetNormalX;
+      const pv2Y = pcZeroY + pantoOffsetPx * pantoOffsetNormalY;
 
-      pantoSpanGroup.appendChild(svgEl('line', {
-        x1: cwX, y1: cwCenterY, x2: p1Ax, y2: p1Ay,
-        stroke: '#059669', 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
+      pantoVertGroup.appendChild(svgEl('line', {
+        x1: cwX, y1: cwCenterY, x2: pv1X, y2: pv1Y,
+        stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
       }));
-      pantoSpanGroup.appendChild(svgEl('line', {
-        x1: pcZeroX, y1: pcZeroY, x2: p2Ax, y2: p2Ay,
-        stroke: '#059669', 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
-      }));
-
-      pantoSpanGroup.appendChild(svgEl('line', {
-        x1: p1Ax, y1: p1Ay, x2: p2Ax, y2: p2Ay,
-        stroke: '#059669', 'stroke-width': '1.8',
-        'marker-start': 'url(#arrowEmeraldStart)',
-        'marker-end': 'url(#arrowEmeraldEnd)'
+      pantoVertGroup.appendChild(svgEl('line', {
+        x1: pcZeroX, y1: pcZeroY, x2: pv2X, y2: pv2Y,
+        stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
       }));
 
-      const pMidX = (p1Ax + p2Ax) / 2 + 12 * pantoNormalX;
-      const pMidY = (p1Ay + p2Ay) / 2 + 12 * pantoNormalY;
-      const pantoDistLabel = `${Math.abs(calc.existingStagger)} mm`;
-      const pBoxW = pantoDistLabel.length * 7.5 + 12;
+      if (Math.hypot(pv2X - pv1X, pv2Y - pv1Y) >= 12) {
+        pantoVertGroup.appendChild(svgEl('line', {
+          x1: pv1X, y1: pv1Y, x2: pv2X, y2: pv2Y,
+          stroke: pal.vertPantoColor, 'stroke-width': '1.8',
+          'marker-start': 'url(#arrowPurpleStart)',
+          'marker-end': 'url(#arrowPurpleEnd)'
+        }));
+      }
 
-      pantoSpanGroup.appendChild(svgEl('rect', {
-        x: pMidX - pBoxW / 2, y: pMidY - 11, width: pBoxW, height: 15, rx: 3,
+      const pvMidX = (pv1X + pv2X) / 2 + 14 * pantoOffsetNormalX;
+      const pvMidY = (pv1Y + pv2Y) / 2 + 14 * pantoOffsetNormalY;
+      const pantoAxisLabel = `Stagger = ${Math.abs(calc.existingStagger)} mm`;
+      const pvBoxW = pantoAxisLabel.length * 7.5 + 12;
+
+      pantoVertGroup.appendChild(svgEl('rect', {
+        x: pvMidX - pvBoxW / 2, y: pvMidY - 11, width: pvBoxW, height: 15, rx: 3,
         fill: bp ? '#0b192c' : '#ffffff', 'fill-opacity': '0.94',
-        stroke: '#059669', 'stroke-width': '0.9'
+        stroke: pal.vertPantoColor, 'stroke-width': '0.9'
       }));
-      pantoSpanGroup.appendChild(svgEl('text', {
-        x: pMidX, y: pMidY, 'text-anchor': 'middle',
-        fill: '#059669', 'font-family': 'JetBrains Mono, monospace', 'font-size': '11.5', 'font-weight': '800'
-      }, pantoDistLabel));
+      pantoVertGroup.appendChild(svgEl('text', {
+        x: pvMidX, y: pvMidY, 'text-anchor': 'middle',
+        fill: pal.vertPantoColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '11.5', 'font-weight': '800'
+      }, pantoAxisLabel));
 
-      layers.dims.appendChild(pantoSpanGroup);
+      // 2. AT RAIL LEVEL (Cw Plumb Mark <-> P℄ Plumb Projection)
+      const sCwRail = (cwX - pcProjRailX) * pantoAxisUnitX + (cwGaugeY - pcProjRailY) * pantoAxisUnitY;
+      const rv1X = pcProjRailX + sCwRail * pantoAxisUnitX + pantoOffsetPx * pantoOffsetNormalX;
+      const rv1Y = pcProjRailY + sCwRail * pantoAxisUnitY + pantoOffsetPx * pantoOffsetNormalY;
+      const rv2X = pcProjRailX + pantoOffsetPx * pantoOffsetNormalX;
+      const rv2Y = pcProjRailY + pantoOffsetPx * pantoOffsetNormalY;
 
-      // 2. DISTANCE ALONG INCLINED RAIL LEVEL: T℄ <-> Cw
-      const railSpanGroup = svgEl('g');
-      const railOffsetDist = 18;
-      const railNormalX = sinA;
-      const railNormalY = -cosA;
-
-      const r1Ax = tcX + railOffsetDist * railNormalX;
-      const r1Ay = railMidY + railOffsetDist * railNormalY;
-      const r2Ax = cwX + railOffsetDist * railNormalX;
-      const r2Ay = cwGaugeY + railOffsetDist * railNormalY;
-
-      railSpanGroup.appendChild(svgEl('line', {
-        x1: tcX, y1: railMidY, x2: r1Ax, y2: r1Ay,
-        stroke: pal.plumbColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
+      pantoVertGroup.appendChild(svgEl('line', {
+        x1: cwX, y1: cwGaugeY, x2: rv1X, y2: rv1Y,
+        stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
       }));
-      railSpanGroup.appendChild(svgEl('line', {
-        x1: cwX, y1: cwGaugeY, x2: r2Ax, y2: r2Ay,
-        stroke: pal.plumbColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
+      pantoVertGroup.appendChild(svgEl('line', {
+        x1: pcProjRailX, y1: pcProjRailY, x2: rv2X, y2: rv2Y,
+        stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
       }));
 
-      railSpanGroup.appendChild(svgEl('line', {
-        x1: r1Ax, y1: r1Ay, x2: r2Ax, y2: r2Ay,
-        stroke: pal.plumbColor, 'stroke-width': '1.8',
-        'marker-start': 'url(#arrowAmberStart)',
-        'marker-end': 'url(#arrowAmberEnd)'
-      }));
+      if (Math.hypot(rv2X - rv1X, rv2Y - rv1Y) >= 12) {
+        pantoVertGroup.appendChild(svgEl('line', {
+          x1: rv1X, y1: rv1Y, x2: rv2X, y2: rv2Y,
+          stroke: pal.vertPantoColor, 'stroke-width': '1.8',
+          'marker-start': 'url(#arrowPurpleStart)',
+          'marker-end': 'url(#arrowPurpleEnd)'
+        }));
+      }
 
-      const rMidX = (r1Ax + r2Ax) / 2 + 12 * railNormalX;
-      const rMidY = (r1Ay + r2Ay) / 2 + 12 * railNormalY;
-      const railDistLabel = `M = ${Math.abs(state.mVal)} mm`;
-      const rBoxW = railDistLabel.length * 7.5 + 12;
+      const rvMidX = (rv1X + rv2X) / 2 + 14 * pantoOffsetNormalX;
+      const rvMidY = (rv1Y + rv2Y) / 2 + 14 * pantoOffsetNormalY;
 
-      railSpanGroup.appendChild(svgEl('rect', {
-        x: rMidX - rBoxW / 2, y: rMidY - 11, width: rBoxW, height: 15, rx: 3,
+      pantoVertGroup.appendChild(svgEl('rect', {
+        x: rvMidX - pvBoxW / 2, y: rvMidY - 11, width: pvBoxW, height: 15, rx: 3,
         fill: bp ? '#0b192c' : '#ffffff', 'fill-opacity': '0.94',
-        stroke: pal.plumbColor, 'stroke-width': '0.9'
+        stroke: pal.vertPantoColor, 'stroke-width': '0.9'
       }));
-      railSpanGroup.appendChild(svgEl('text', {
-        x: rMidX, y: rMidY, 'text-anchor': 'middle',
-        fill: pal.plumbColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '11.5', 'font-weight': '800'
-      }, railDistLabel));
+      pantoVertGroup.appendChild(svgEl('text', {
+        x: rvMidX, y: rvMidY, 'text-anchor': 'middle',
+        fill: pal.vertPantoColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '11.5', 'font-weight': '800'
+      }, pantoAxisLabel));
 
-      layers.dims.appendChild(railSpanGroup);
+      layers.dims.appendChild(pantoVertGroup);
 
       // TITLE BLOCK & STAMPS
       layers.title.appendChild(svgEl('rect', {
