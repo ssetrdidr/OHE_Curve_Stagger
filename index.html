@@ -770,9 +770,9 @@
         <div>• Track Centre (T℄) to Plumb Point (Cw) = <strong>${fmtSigned(state.mVal)} mm</strong> (${state.mVal >= 0 ? 'Away from Mast' : 'Towards Mast'})</div>
         <div class="border-t border-slate-200 pt-1.5">${step3Html}</div>
         <div class="border-t border-slate-200 pt-1.5">
-          <strong class="text-purple-700">Step 4 (Calculated PCL Length from Inclined Rail Level to 0 of Panto):</strong><br/>
+          <strong class="text-purple-700">Step 4 (Cal. Hcw / H_PCL Length along P℄ Axis):</strong><br/>
           • H_PCL = Hcw × cos(θ) = ${state.hcw} × cos(${calc.trueAngleDeg.toFixed(2)}°) = <span class="text-purple-900 font-bold">${calc.hPclMm} mm</span><br/>
-          <span class="text-[10.5px] text-slate-500">• Perpendicular distance along P℄ axis from Inclined Rail Level to 0 (P℄).</span>
+          <span class="text-[10.5px] text-slate-500">• Length measured along the inclined P℄ axis from Inclined Rail Level to 0 (P℄).</span>
         </div>
       `;
 
@@ -1294,32 +1294,34 @@
         fill: pal.muted, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10'
       }, `(${(state.hcw / 1000).toFixed(2)} m)`));
 
-      // CALCULATED LENGTH OF PCL FROM INCLINED RAIL LEVEL TO 0 OF PANTO (DEPICTED TOWARDS HIGHER RAIL SIDE)
+            // CALCULATED H_PCL ALONG THE INCLINED P℄ AXIS (OFFSET TOWARDS HIGHER RAIL SIDE)
       const pclDimGroup = svgEl('g');
-      // Higher rail side direction perpendicular to PCL:
-      // If mastSide === 'inside', higher rail is on Left (towards -X in inclined plane).
-      // If mastSide === 'outside', higher rail is on Right (towards +X in inclined plane).
-      // Offset direction vector along Inclined Rail Level towards higher rail:
       const offsetSign = (state.mastSide === 'inside' || state.mastSide === 'tangent') ? -1 : 1;
-      const offsetDist = 55; // Offset distance from PCL axis towards higher rail side
+      const offsetDist = 60;
 
-      // Offset start point at Inclined Rail Level (pcProjRail Point) and end point at 0 (P℄):
-      const dimStartX = pcProjRailX + offsetSign * offsetDist * cosA;
-      const dimStartY = pcProjRailY + offsetSign * offsetDist * sinA;
-      const dimEndX = pcZeroX + offsetSign * offsetDist * cosA;
-      const dimEndY = pcZeroY + offsetSign * offsetDist * sinA;
+      // Base at track centre on the Inclined Rail Level, top at 0 (P℄) on the panto axis
+      const pclBaseX = tcX;
+      const pclBaseY = railMidY;
+      const pclTopX = pcZeroX;
+      const pclTopY = pcZeroY;
 
-      // Extension dashed lines from PCL axis to dimension line:
+      // Offset perpendicular to the P℄ axis, so the line runs parallel to it
+      const dimStartX = pclBaseX + offsetSign * offsetDist * cosA;
+      const dimStartY = pclBaseY + offsetSign * offsetDist * sinA;
+      const dimEndX = pclTopX + offsetSign * offsetDist * cosA;
+      const dimEndY = pclTopY + offsetSign * offsetDist * sinA;
+
+      // Extension lines from the P℄ axis points to the dimension line
       pclDimGroup.appendChild(svgEl('line', {
-        x1: pcProjRailX, y1: pcProjRailY, x2: dimStartX + offsetSign * 6 * cosA, y2: dimStartY + offsetSign * 6 * sinA,
+        x1: pclBaseX, y1: pclBaseY, x2: dimStartX + offsetSign * 6 * cosA, y2: dimStartY + offsetSign * 6 * sinA,
         stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
       }));
       pclDimGroup.appendChild(svgEl('line', {
-        x1: pcZeroX, y1: pcZeroY, x2: dimEndX + offsetSign * 6 * cosA, y2: dimEndY + offsetSign * 6 * sinA,
+        x1: pclTopX, y1: pclTopY, x2: dimEndX + offsetSign * 6 * cosA, y2: dimEndY + offsetSign * 6 * sinA,
         stroke: pal.vertPantoColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
       }));
 
-      // Dimension line parallel to PCL:
+      // Dimension line parallel to the blue P℄ axis
       pclDimGroup.appendChild(svgEl('line', {
         x1: dimStartX, y1: dimStartY, x2: dimEndX, y2: dimEndY,
         stroke: pal.vertPantoColor, 'stroke-width': '1.8',
@@ -1327,10 +1329,10 @@
         'marker-end': 'url(#arrowPurpleEnd)'
       }));
 
-      // Label at midpoint:
+      // Label at midpoint
       const pclMidX = (dimStartX + dimEndX) / 2;
       const pclMidY = (dimStartY + dimEndY) / 2;
-      const pclLabel = `P℄ Length = ${calc.hPclMm} mm`;
+      const pclLabel = `H_PCL (Cal. Hcw) = ${calc.hPclMm} mm`;
       const pclBoxW = pclLabel.length * 7.2 + 12;
 
       pclDimGroup.appendChild(svgEl('rect', {
