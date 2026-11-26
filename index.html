@@ -9,14 +9,14 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ssetrdidr.github.io/OHE_Curve_Stagger/" />
   <meta property="og:title" content="Indian Railways OHE Stagger &amp; Superelevation CAD Visualizer — Sandeep Mushini" />
-  <meta property="og:description" content="25kV AC Traction Contact Wire Stagger &amp; Cant Cross-Section CAD Analyzer and Rail Gauge Plumb Back-Calculation Tool." />
+  <meta property="og:description" content="25kV AC Traction Contact Wire Stagger &amp; Cant Cross-Section CAD Analyzer and Sleeper Plumb Back-Calculation Tool." />
   <meta property="og:image" content="https://ssetrdidr.github.io/OHE_Curve_Stagger/preview-image.png" />
 
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="https://ssetrdidr.github.io/OHE_Curve_Stagger/" />
   <meta name="twitter:title" content="Indian Railways OHE Stagger &amp; Superelevation CAD Visualizer — Sandeep Mushini" />
-  <meta name="twitter:description" content="25kV AC Traction Contact Wire Stagger &amp; Cant Cross-Section CAD Analyzer and Rail Gauge Plumb Back-Calculation Tool." />
+  <meta name="twitter:description" content="25kV AC Traction Contact Wire Stagger &amp; Cant Cross-Section CAD Analyzer and Sleeper Plumb Back-Calculation Tool." />
   <meta name="twitter:image" content="https://ssetrdidr.github.io/OHE_Curve_Stagger/preview-image.png" />
   
   <!-- PWA: installable app metadata -->
@@ -145,11 +145,8 @@
 
         <button id="btnExaggeration" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/50 text-amber-300 transition flex items-center gap-1.5">
           <span>Cant Tilt Scale:</span>
-          <strong id="tiltScaleLabel" class="font-mono">1× True Scale</strong>
+          <strong id="tiltScaleLabel" class="font-mono">4× Clarity</strong>
         </button>
-        <div id="tiltExaggerationNote" style="display:none;" class="w-full mt-1 px-2.5 py-1 rounded bg-amber-950/80 border border-amber-500/40 text-[11px] font-mono text-amber-200 leading-snug">
-          Note: 4× visual exaggeration tilts P℄ more steeply over height Hcw, making wire/0 position appear shifted—actual field geometry does not jump.
-        </div>
 
         <button id="btnResetPreset" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 transition">
           Reset Bheema Bridge
@@ -240,11 +237,6 @@
             <input id="rngSe" type="range" min="0" max="165" step="1" value="52" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" />
           </div>
 
-          <!-- Measurement Note -->
-          <p class="text-[11px] text-slate-600 bg-sky-50/80 border border-sky-200/80 rounded-lg px-2.5 py-1.5 leading-snug">
-            <strong>Note:</strong> Measure the contact wire height with the track gauge resting across both rails, and mark <strong>Cw</strong> on the gauge.
-          </p>
-
           <!-- Height of Contact Wire Hcw -->
           <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80">
             <div class="flex justify-between items-center mb-1">
@@ -318,7 +310,7 @@
 
         <!-- Safety Reminder -->
         <div class="mt-3 p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-[11px] text-rose-900 leading-snug">
-          <strong>Safety Protocol:</strong> Drop plumb bob from contact wire to mark <strong>Cw</strong> on rail gauge <em>only</em> after obtaining valid Power Block, testing line dead, and clamping Discharge Rods on both sides.
+          <strong>Safety Protocol:</strong> Drop plumb bob from contact wire to mark <strong>Cw</strong> on sleeper <em>only</em> after obtaining valid Power Block, testing line dead, and clamping Discharge Rods on both sides.
         </div>
       </div>
 
@@ -336,7 +328,7 @@
             <span id="cadHeaderTitle" class="font-semibold text-white">DWG: BHEEMA BRIDGE | UP LINE | MAST 257/03</span>
           </div>
           <div class="flex items-center gap-3 text-[11px] text-slate-300">
-            <span id="cadHeaderScale">CANT ANGLE: 1.78° (VISUAL 1×)</span>
+            <span id="cadHeaderScale">CANT ANGLE: 1.78° (VISUAL 4×)</span>
             <span>|</span>
             <span>ALL DIMS IN MM</span>
           </div>
@@ -398,7 +390,7 @@
               Standard Linetype Assignment Legend
             </span>
             <span class="text-[11px] font-mono text-slate-500">
-              Symbols: T℄ = Track Centre | P℄ = Panto Centre | Cw = Plumb Mark on Rail Gauge | 0 = Panto Axis
+              Symbols: T℄ = Track Centre | P℄ = Panto Centre | Cw = Plumb Mark on Sleeper | 0 = Panto Axis
             </span>
           </div>
 
@@ -481,7 +473,7 @@
       mVal: 133,          // ±M from T℄ to Cw in mm
       targetStagger: 300,
       blueprintMode: false,
-      tiltExaggeration: 1
+      tiltExaggeration: 4
     };
 
     // DOM Element References
@@ -751,15 +743,10 @@
       els.calcStepsBox.innerHTML = `
         <div><strong class="text-sky-700">Step 1 (Pantograph Axis Shift Sd):</strong></div>
         <div>Sd = (Hcw × Se) / G = (${state.hcw} × ${calc.effectiveSe}) / ${state.gauge} = <strong>${calc.sdExact.toFixed(2)} mm ≈ ${calc.sdRounded} mm</strong></div>
-        <div class="border-t border-slate-200 pt-1.5"><strong class="text-sky-700">Step 2 (Rail Gauge Plumb Measurement ±M):</strong></div>
+        <div class="border-t border-slate-200 pt-1.5"><strong class="text-sky-700">Step 2 (Sleeper Plumb Measurement ±M):</strong></div>
         <div>• Track Centre (T℄) to Plumb Point (Cw) = <strong>${fmtSigned(state.mVal)} mm</strong> (${state.mVal >= 0 ? 'Away from Mast' : 'Towards Mast'})</div>
         <div class="border-t border-slate-200 pt-1.5">${step3Html}</div>
       `;
-
-      const tiltNoteEl = document.getElementById('tiltExaggerationNote');
-      if (tiltNoteEl) {
-        tiltNoteEl.style.display = state.tiltExaggeration === 4 ? 'block' : 'none';
-      }
 
       els.cadHeaderTitle.textContent = `DWG: ${state.section.toUpperCase()} | ${state.line.toUpperCase()} | MAST ${state.mast.toUpperCase()}`;
       els.cadHeaderScale.textContent = `CANT: ${calc.effectiveSe} MM (${calc.trueAngleDeg.toFixed(2)}° | VISUAL ${state.tiltExaggeration}×)`;
@@ -872,6 +859,7 @@
       }));
 
       // 2. MAST NUMBERING PLATE (AUTHENTIC IR BLUE PLATE WITH YELLOW FRACTION TEXT)
+      // Positioned at the vertical centre of the mast (between mastTopY and mastBaseY).
       const plateW = 44;
       const plateH = 40;
       const plateX = mastX - plateW / 2;
@@ -1147,11 +1135,11 @@
       const cwPanContactY = (pcZeroY - 2 * cosA) + (cwX - pcZeroX) * Math.tan(tiltAngle);
       const wireRadius = 6.5;
       const cwCenterY = cwPanContactY - wireRadius;
-      const cwGaugeY = railMidY + (cwX - tcX) * Math.tan(tiltAngle);
+      const cwSleeperY = railMidY + (cwX - tcX) * Math.tan(tiltAngle);
 
       layers.lines.appendChild(svgEl('line', {
         x1: cwX, y1: cwCenterY,
-        x2: cwX, y2: cwGaugeY + 28,
+        x2: cwX, y2: cwSleeperY + 28,
         stroke: pal.plumbColor,
         'stroke-width': '2.2',
         'stroke-dasharray': '5 3'
@@ -1168,11 +1156,11 @@
       }, 'CONTACT WIRE'));
 
       layers.panto.appendChild(svgEl('circle', {
-        cx: cwX, cy: cwGaugeY, r: 4.8,
+        cx: cwX, cy: cwSleeperY, r: 4.8,
         fill: pal.plumbColor, stroke: pal.ink, 'stroke-width': '1.4'
       }));
       layers.panto.appendChild(svgEl('text', {
-        x: cwX - 8, y: cwGaugeY - 10, 'text-anchor': 'end',
+        x: cwX - 8, y: cwSleeperY - 10, 'text-anchor': 'end',
         fill: pal.plumbColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '12.5', 'font-weight': '800'
       }, 'Cw'));
 
@@ -1203,14 +1191,14 @@
       );
 
       // 1. GROUND LEVEL DIMENSIONS (OFFSET TO PREVENT ±M & Sd OVERLAP)
-      const botDimY1 = Math.max(cwGaugeY, railMidY, pcProjRailY) + 42;
+      const botDimY1 = Math.max(cwSleeperY, railMidY, pcProjRailY) + 42;
       const botDimY2 = botDimY1 + 32;
       const botDimY3 = botDimY2 + 32;
 
       drawHorizontalDim(
         layers.dims,
         tcX, cwX, botDimY1,
-        railMidY + 6, cwGaugeY + 6,
+        railMidY + 6, cwSleeperY + 6,
         `±M = ${fmtSigned(state.mVal)} mm`,
         pal.plumbColor,
         'arrowAmberStart', 'arrowAmberEnd',
@@ -1232,7 +1220,7 @@
       drawHorizontalDim(
         layers.dims,
         pcProjRailX, cwX, calc.effectiveSe > 0 ? botDimY3 : botDimY2,
-        pcProjRailY + 6, cwGaugeY + 28,
+        pcProjRailY + 6, cwSleeperY + 28,
         `EXISTING STAGGER = ${fmtSigned(calc.existingStagger)} mm`,
         '#059669',
         'arrowEmeraldStart', 'arrowEmeraldEnd',
@@ -1268,94 +1256,6 @@
         x: hcwDimX, y: hcwMidY + 11, 'text-anchor': 'middle',
         fill: pal.muted, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10'
       }, `(${(state.hcw / 1000).toFixed(2)} m)`));
-
-      // 1. DISTANCE ALONG PANTOGRAPH AXIS: CONTACT WIRE DOT <-> 0 (P℄) DOT
-      const pantoSpanGroup = svgEl('g');
-      const pantoOffsetDist = 20;
-      const pantoNormalX = -sinA;
-      const pantoNormalY = -cosA;
-
-      const p1Ax = cwX + pantoOffsetDist * pantoNormalX;
-      const p1Ay = cwCenterY + pantoOffsetDist * pantoNormalY;
-      const p2Ax = pcZeroX + pantoOffsetDist * pantoNormalX;
-      const p2Ay = pcZeroY + pantoOffsetDist * pantoNormalY;
-
-      pantoSpanGroup.appendChild(svgEl('line', {
-        x1: cwX, y1: cwCenterY, x2: p1Ax, y2: p1Ay,
-        stroke: '#059669', 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
-      }));
-      pantoSpanGroup.appendChild(svgEl('line', {
-        x1: pcZeroX, y1: pcZeroY, x2: p2Ax, y2: p2Ay,
-        stroke: '#059669', 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
-      }));
-
-      pantoSpanGroup.appendChild(svgEl('line', {
-        x1: p1Ax, y1: p1Ay, x2: p2Ax, y2: p2Ay,
-        stroke: '#059669', 'stroke-width': '1.8',
-        'marker-start': 'url(#arrowEmeraldStart)',
-        'marker-end': 'url(#arrowEmeraldEnd)'
-      }));
-
-      const pMidX = (p1Ax + p2Ax) / 2 + 12 * pantoNormalX;
-      const pMidY = (p1Ay + p2Ay) / 2 + 12 * pantoNormalY;
-      const pantoDistLabel = `${Math.abs(calc.existingStagger)} mm`;
-      const pBoxW = pantoDistLabel.length * 7.5 + 12;
-
-      pantoSpanGroup.appendChild(svgEl('rect', {
-        x: pMidX - pBoxW / 2, y: pMidY - 11, width: pBoxW, height: 15, rx: 3,
-        fill: bp ? '#0b192c' : '#ffffff', 'fill-opacity': '0.94',
-        stroke: '#059669', 'stroke-width': '0.9'
-      }));
-      pantoSpanGroup.appendChild(svgEl('text', {
-        x: pMidX, y: pMidY, 'text-anchor': 'middle',
-        fill: '#059669', 'font-family': 'JetBrains Mono, monospace', 'font-size': '11.5', 'font-weight': '800'
-      }, pantoDistLabel));
-
-      layers.dims.appendChild(pantoSpanGroup);
-
-      // 2. DISTANCE ALONG INCLINED RAIL LEVEL: T℄ <-> Cw
-      const railSpanGroup = svgEl('g');
-      const railOffsetDist = 18;
-      const railNormalX = sinA;
-      const railNormalY = -cosA;
-
-      const r1Ax = tcX + railOffsetDist * railNormalX;
-      const r1Ay = railMidY + railOffsetDist * railNormalY;
-      const r2Ax = cwX + railOffsetDist * railNormalX;
-      const r2Ay = cwGaugeY + railOffsetDist * railNormalY;
-
-      railSpanGroup.appendChild(svgEl('line', {
-        x1: tcX, y1: railMidY, x2: r1Ax, y2: r1Ay,
-        stroke: pal.plumbColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
-      }));
-      railSpanGroup.appendChild(svgEl('line', {
-        x1: cwX, y1: cwGaugeY, x2: r2Ax, y2: r2Ay,
-        stroke: pal.plumbColor, 'stroke-width': '1', 'stroke-dasharray': '3 2', 'stroke-opacity': '0.75'
-      }));
-
-      railSpanGroup.appendChild(svgEl('line', {
-        x1: r1Ax, y1: r1Ay, x2: r2Ax, y2: r2Ay,
-        stroke: pal.plumbColor, 'stroke-width': '1.8',
-        'marker-start': 'url(#arrowAmberStart)',
-        'marker-end': 'url(#arrowAmberEnd)'
-      }));
-
-      const rMidX = (r1Ax + r2Ax) / 2 + 12 * railNormalX;
-      const rMidY = (r1Ay + r2Ay) / 2 + 12 * railNormalY;
-      const railDistLabel = `M = ${Math.abs(state.mVal)} mm`;
-      const rBoxW = railDistLabel.length * 7.5 + 12;
-
-      railSpanGroup.appendChild(svgEl('rect', {
-        x: rMidX - rBoxW / 2, y: rMidY - 11, width: rBoxW, height: 15, rx: 3,
-        fill: bp ? '#0b192c' : '#ffffff', 'fill-opacity': '0.94',
-        stroke: pal.plumbColor, 'stroke-width': '0.9'
-      }));
-      railSpanGroup.appendChild(svgEl('text', {
-        x: rMidX, y: rMidY, 'text-anchor': 'middle',
-        fill: pal.plumbColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '11.5', 'font-weight': '800'
-      }, railDistLabel));
-
-      layers.dims.appendChild(railSpanGroup);
 
       // TITLE BLOCK & STAMPS
       layers.title.appendChild(svgEl('rect', {
@@ -1491,7 +1391,7 @@
       });
 
       els.btnExaggeration.addEventListener('click', () => {
-        state.tiltExaggeration = state.tiltExaggeration === 1 ? 4 : 1;
+        state.tiltExaggeration = state.tiltExaggeration === 4 ? 1 : 4;
         els.tiltScaleLabel.textContent = state.tiltExaggeration === 4 ? '4× Clarity' : '1× True Scale';
         renderAll();
       });
@@ -1565,7 +1465,7 @@
                 width: 138.9% !important;
               }
               main { gap: 10px !important; }
-              .min-h-\[540px\], .sm\:min-h-\[620px\] { min-height: 460px !important; }
+              .min-h-\\[540px\\], .sm\\:min-h-\\[620px\\] { min-height: 460px !important; }
               * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             </style>
           `;
