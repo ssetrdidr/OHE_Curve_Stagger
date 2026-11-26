@@ -1296,7 +1296,7 @@
 
             // CALCULATED H_PCL ALONG THE INCLINED P℄ AXIS (OFFSET TOWARDS HIGHER RAIL SIDE)
       const pclDimGroup = svgEl('g');
-      const offsetSign = (state.mastSide === 'inside' || state.mastSide === 'tangent') ? -1 : 1;
+      const offsetSign = 1; // always towards the mast side (right), which has free space
       const offsetDist = 60;
 
       // Base at track centre on the Inclined Rail Level, top at 0 (P℄) on the panto axis
