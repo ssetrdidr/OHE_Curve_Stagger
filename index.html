@@ -9,1534 +9,814 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ssetrdidr.github.io/OHE_Curve_Stagger/" />
   <meta property="og:title" content="Indian Railways OHE Stagger &amp; Superelevation CAD Visualizer — Sandeep Mushini" />
-  <meta property="og:description" content="25kV AC Traction Contact Wire Stagger &amp; Cant Cross-Section CAD Analyzer and Sleeper Plumb Back-Calculation Tool." />
-  <meta property="og:image" content="https://ssetrdidr.github.io/OHE_Curve_Stagger/preview-image.png" />
+  <meta property="og:description" content="25kV AC Traction Contact Wire Stagger &amp; Cant Cross-Section CAD Analyzer by Sandeep Mushini (SSE / TRD / IDR / UBL / SWR)." />
+  <meta property="og:image" content="https://ssetrdidr.github.io/OHE_Curve_Stagger/preview-image.png?v=3" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://ssetrdidr.github.io/OHE_Curve_Stagger/" />
   <meta name="twitter:title" content="Indian Railways OHE Stagger &amp; Superelevation CAD Visualizer — Sandeep Mushini" />
-  <meta name="twitter:description" content="25kV AC Traction Contact Wire Stagger &amp; Cant Cross-Section CAD Analyzer and Sleeper Plumb Back-Calculation Tool." />
-  <meta name="twitter:image" content="https://ssetrdidr.github.io/OHE_Curve_Stagger/preview-image.png" />
-  
-  <!-- PWA: installable app metadata -->
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0b192c" />
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
-  <link rel="apple-touch-icon" href="icon-180.png" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="OHE Stagger" />
+  <meta name="twitter:description" content="25kV AC Traction Contact Wire Stagger &amp; Cant Cross-Section CAD Analyzer by Sandeep Mushini (SSE / TRD / IDR / UBL / SWR)." />
+  <meta name="twitter:image" content="https://ssetrdidr.github.io/OHE_Curve_Stagger/preview-image.png?v=3" />
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Technical Typography: Inter & JetBrains Mono -->
+  <!-- PWA / App Icon & Theme Tags -->
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png" />
+  <meta name="theme-color" content="#0b192c" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-        },
-      },
-    };
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,600;0,700;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
   <style>
+    :root {
+      --bg-dark: #091322;
+      --panel-bg: #ffffff;
+      --ink-dark: #0f172a;
+      --muted: #475569;
+      --accent: #0284c7;
+      --accent-dark: #0369a1;
+      --border: #cbd5e1;
+      --ok-bg: #dcfce7;
+      --ok-ink: #166534;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #f1f5f9;
+      color: var(--ink-dark);
+    }
+
+    header.app-header {
+      background: linear-gradient(135deg, #07111e 0%, #0f243d 100%);
+      color: #f8fafc;
+      padding: 16px 20px;
+      border-bottom: 3px solid #0ea5e9;
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-family: 'Chakra Petch', sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    .brand-sub {
+      font-size: 0.85rem;
+      color: #bae6fd;
+      margin: 4px 0 0;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    button.btn {
       font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      cursor: pointer;
+      transition: background 0.15s ease;
     }
-    .cad-grid-light {
-      background-color: #ffffff;
-      background-image: 
-        linear-gradient(to right, rgba(203, 213, 225, 0.35) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(203, 213, 225, 0.35) 1px, transparent 1px),
-        linear-gradient(to right, rgba(148, 163, 184, 0.25) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(148, 163, 184, 0.25) 1px, transparent 1px);
-      background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+
+    button.btn:hover { background: rgba(255, 255, 255, 0.22); }
+    button.btn-primary {
+      background: #0284c7;
+      border-color: #38bdf8;
     }
-    .cad-grid-blueprint {
-      background-color: #0b192c;
-      background-image: 
-        linear-gradient(to right, rgba(56, 189, 248, 0.12) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(56, 189, 248, 0.12) 1px, transparent 1px),
-        linear-gradient(to right, rgba(56, 189, 248, 0.25) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(56, 189, 248, 0.25) 1px, transparent 1px);
-      background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+    button.btn-primary:hover { background: #0369a1; }
+    button.btn-install {
+      background: #059669;
+      border-color: #34d399;
     }
+    button.btn-install:hover { background: #047857; }
+
+    main.container {
+      max-width: 1280px;
+      margin: 18px auto 32px;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 960px) {
+      main.container { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+    }
+
+    .card h2 {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.05rem;
+      margin: 0 0 12px;
+      color: #0f172a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge-ok {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--ok-bg);
+      color: var(--ok-ink);
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .field-group { margin-bottom: 12px; }
+    .field-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 7px 9px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink-dark);
+    }
+
     input[type="range"] {
-      accent-color: #0284c7;
+      width: 100%;
+      margin-top: 6px;
+      accent-color: var(--accent);
+    }
+
+    .seg-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .seg-btn {
+      padding: 8px 6px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #f8fafc;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .seg-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .kpi-box {
+      background: #0f172a;
+      color: #f8fafc;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .kpi-box.green { background: #064e3b; }
+    .kpi-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.85; }
+    .kpi-val { font-family: 'Chakra Petch', sans-serif; font-size: 1.5rem; font-weight: 700; margin-top: 4px; }
+    .kpi-sub { font-size: 0.75rem; opacity: 0.85; margin-top: 2px; }
+
+    .calc-steps {
+      font-size: 0.83rem;
+      line-height: 1.5;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .cad-wrap {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    svg#cadSvg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .legend-panel {
+      margin-top: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      font-size: 0.8rem;
+    }
+
+    .legend-title {
+      font-family: 'Chakra Petch', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+    }
+
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 6px 14px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #1e293b;
+    }
+
+    .legend-swatch {
+      width: 28px;
+      height: 0;
+      border-top-width: 2.5px;
+      flex-shrink: 0;
+    }
+
+    footer.app-footer {
+      max-width: 1280px;
+      margin: 0 auto 24px;
+      padding: 0 16px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @page {
+      size: A4 landscape;
+      margin: 8mm;
+    }
+
+    @media print {
+      body { background: #ffffff; }
+      header.app-header, footer.app-footer, .no-print { display: none !important; }
+      main.container {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        grid-template-columns: 320px 1fr;
+        gap: 10px;
+      }
+      .card {
+        box-shadow: none;
+        padding: 10px;
+        break-inside: avoid;
+      }
     }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col">
-<!-- Auto-Hiding Install App Banner -->
-<div id="pwa-install-banner" style="display:none; background:#1e293b; color:#ffffff; padding:12px 16px; font-family:system-ui, -apple-system, sans-serif; font-size:13px; border-bottom:3px solid #2ea44f; position:relative; z-index:9999; box-shadow:0 2px 6px rgba(0,0,0,0.2);">
-  <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; max-width:900px; margin:0 auto;">
-    <div>
-      <strong style="font-size:14px; color:#4ade80;">📲 Install OHE Stagger App on Android</strong>
-      <ol style="margin:6px 0 0 18px; padding:0; line-height:1.5; color:#e2e8f0;">
-        <li>Tap <strong>⋮</strong> (three dots) in Chrome's top-right corner.</li>
-        <li>Select <strong>"📲 Install and create a shortcut"</strong> (or <em>Add to Home screen</em>).</li>
-        <li>Tap <strong>Install</strong> for full-screen offline access.</li>
-      </ol>
-    </div>
-    <button onclick="dismissInstallBanner()" aria-label="Close" style="background:transparent; border:1px solid #475569; color:#cbd5e1; border-radius:4px; padding:2px 8px; font-size:14px; cursor:pointer; flex-shrink:0;">✕</button>
-  </div>
-</div>
-
-<script>
-  (function() {
-    // Check if already running as an installed home-screen app (standalone/fullscreen)
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    // Check if user manually dismissed the banner in this browser
-    const isDismissed = localStorage.getItem('ohe_install_banner_dismissed') === 'true';
-
-    if (!isStandalone && !isDismissed) {
-      document.getElementById('pwa-install-banner').style.display = 'block';
-    }
-  })();
-
-  function dismissInstallBanner() {
-    document.getElementById('pwa-install-banner').style.display = 'none';
-    localStorage.setItem('ohe_install_banner_dismissed', 'true');
-  }
-</script>
-  <!-- Top Engineering Header Bar -->
-  <header class="bg-slate-900 text-white border-b border-slate-700 px-4 py-3 shadow-md">
-    <div class="max-w-screen-2xl mx-auto flex flex-wrap items-center justify-between gap-3">
-      <!-- App Title & Creator Attribution -->
-      <div class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded-lg bg-sky-600 flex items-center justify-center font-mono font-extrabold text-base shadow-inner border border-sky-400 shrink-0">
-          OHE
-        </div>
-        <div>
-          <h1 class="text-base sm:text-lg font-bold tracking-tight leading-tight">
-            Indian Railways TRD — Contact Wire Stagger &amp; Cant CAD Analyzer
-          </h1>
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-0.5">
-            <span class="text-xs text-slate-400 font-mono">
-              25kV AC Traction | Standard Linetype Cross-Section &amp; Plumb Back-Calculation
-            </span>
-            <span class="hidden sm:inline text-slate-600">|</span>
-            <span class="text-xs font-mono text-amber-300 font-semibold">
-              Created by Sandeep Mushini — SSE / TRD / IDR / UBL / SWR
-            </span>
-          </div>
-        </div>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div>
+        <h1 class="brand-title">Indian Railways TRD — Contact Wire Stagger &amp; Cant CAD Analyzer</h1>
+        <p class="brand-sub">25kV AC Traction | Plumb Back-Calculation &amp; Cross-Section | Created by Sandeep Mushini — SSE / TRD / IDR / UBL / SWR</p>
       </div>
-
-      <!-- Toolbar Actions -->
-      <div class="flex flex-wrap items-center gap-2">
-        <button id="btnSheetTheme" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 transition flex items-center gap-1.5">
-          <span id="themeDot" class="w-2.5 h-2.5 rounded-full bg-white border border-slate-400"></span>
-          <span id="themeLabel">CAD Sheet: White</span>
-        </button>
-
-        <button id="btnExaggeration" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/50 text-amber-300 transition flex items-center gap-1.5">
-          <span>Cant Tilt Scale:</span>
-          <strong id="tiltScaleLabel" class="font-mono">4× Clarity</strong>
-        </button>
-
-        <button id="btnResetPreset" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 transition">
-          Reset Bheema Bridge
-        </button>
-
-        <button id="btnDownloadPDF" type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 hover:bg-sky-500 text-white transition shadow">
-          Export PDF
-        </button>
-
-        <button id="btnDownloadPNG" type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition shadow">
-          Export PNG
-        </button>
+      <div class="toolbar no-print">
+        <button id="installAppBtn" class="btn btn-install" type="button" style="display:none;">Install App</button>
+        <button id="sheetToggleBtn" class="btn" type="button">CAD Sheet: White</button>
+        <button id="scaleToggleBtn" class="btn" type="button">Cant Tilt Scale: 4x Clarity</button>
+        <button id="resetBtn" class="btn" type="button">Reset Bheema Bridge</button>
+        <button id="exportPngBtn" class="btn btn-primary" type="button">Export PNG</button>
+        <button id="exportPdfBtn" class="btn btn-primary" type="button">Export PDF</button>
       </div>
     </div>
   </header>
 
-  <!-- Main Workspace -->
-  <main class="flex-1 max-w-screen-2xl w-full mx-auto p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
+  <main class="container">
+    <div>
+      <section class="card" id="sec1">
+        <h2>1. Location &amp; Track Geometry <span class="badge-ok">FIELD DATA</span></h2>
 
-    <!-- Left Sidebar: Field Inputs & Step-by-Step Calculation -->
-    <section class="lg:col-span-4 flex flex-col gap-4">
-
-      <!-- Location & Curve Configuration Card -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
-          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">1. Location &amp; Track Geometry</h2>
-          <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200">FIELD DATA</span>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 mb-3">
+        <div class="field-grid">
           <div>
-            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Bridge / Section</label>
-            <input id="inpSection" type="text" value="Bheema Bridge" class="w-full px-2.5 py-1.5 text-xs font-medium border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none" />
+            <label for="locBridge">Bridge / Section</label>
+            <input id="locBridge" type="text" value="Bheema Bridge" />
           </div>
           <div>
-            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Line</label>
-            <input id="inpLine" type="text" value="UP Line" class="w-full px-2.5 py-1.5 text-xs font-medium border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none" />
+            <label for="locLine">Line</label>
+            <input id="locLine" type="text" value="UP Line" />
           </div>
           <div>
-            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Mast No.</label>
-            <input id="inpMast" type="text" value="257/03" class="w-full px-2.5 py-1.5 text-xs font-mono font-semibold border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none" />
+            <label for="locMast">Mast No.</label>
+            <input id="locMast" type="text" value="257/03" />
           </div>
         </div>
 
-        <!-- Mast Side Selector -->
-        <div class="mb-3">
-          <label class="block text-[11px] font-semibold text-slate-600 mb-1">OHE Mast Position on Curve</label>
-          <div class="grid grid-cols-3 gap-1.5 bg-slate-100 p-1 rounded-lg border border-slate-200">
-            <button type="button" data-mast-side="inside" class="mast-side-btn py-1.5 px-2 rounded-md text-xs font-semibold transition bg-sky-600 text-white shadow-sm">
-              Inside Curve
-            </button>
-            <button type="button" data-mast-side="outside" class="mast-side-btn py-1.5 px-2 rounded-md text-xs font-semibold transition text-slate-600 hover:bg-white">
-              Outside Curve
-            </button>
-            <button type="button" data-mast-side="tangent" class="mast-side-btn py-1.5 px-2 rounded-md text-xs font-semibold transition text-slate-600 hover:bg-white">
-              Tangent (Se=0)
-            </button>
-          </div>
-          <p id="mastSideHint" class="text-[11px] text-slate-500 mt-1">
-            Mast on lower/inner rail side (Right). P℄ shifts towards mast (+Sd added).
-          </p>
-        </div>
-
-        <!-- Track Gauge Toggle -->
-        <div class="mb-3">
-          <label class="block text-[11px] font-semibold text-slate-600 mb-1">Track Gauge (G)</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button type="button" data-gauge="1676" class="gauge-btn py-1.5 px-2.5 rounded-lg text-xs font-mono font-semibold border transition bg-sky-50 border-sky-500 text-sky-800">
-              1676 mm (Nominal BG)
-            </button>
-            <button type="button" data-gauge="1750" class="gauge-btn py-1.5 px-2.5 rounded-lg text-xs font-mono font-semibold border transition bg-white border-slate-300 text-slate-600 hover:bg-slate-50">
-              1750 mm (Dynamic BG)
-            </button>
+        <div class="field-group">
+          <label>OHE Mast Position on Curve</label>
+          <div class="seg-row" id="mastPosGroup">
+            <button type="button" class="seg-btn active" data-pos="inside">Inside Curve</button>
+            <button type="button" class="seg-btn" data-pos="outside">Outside Curve</button>
+            <button type="button" class="seg-btn" data-pos="tangent">Tangent (Se=0)</button>
           </div>
         </div>
 
-        <!-- Sliders & Numeric Inputs -->
-        <div class="space-y-3">
-          <!-- Superelevation Se -->
-          <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80">
-            <div class="flex justify-between items-center mb-1">
-              <label for="inpSe" class="text-xs font-semibold text-slate-700">Superelevation (<span class="font-mono text-sky-700">Se</span>)</label>
-              <div class="flex items-center gap-1">
-                <input id="inpSe" type="number" min="0" max="165" step="1" value="52" class="w-20 px-2 py-0.5 text-right font-mono text-xs font-bold border border-slate-300 rounded bg-white" />
-                <span class="text-xs font-mono text-slate-500">mm</span>
-              </div>
-            </div>
-            <input id="rngSe" type="range" min="0" max="165" step="1" value="52" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" />
+        <div class="field-group">
+          <label>Track Gauge (G)</label>
+          <div class="seg-row" style="grid-template-columns: 1fr 1fr;" id="gaugeGroup">
+            <button type="button" class="seg-btn active" data-gauge="1676">1676 mm (Nominal BG)</button>
+            <button type="button" class="seg-btn" data-gauge="1750">1750 mm (Dynamic BG)</button>
           </div>
+        </div>
 
-          <!-- Height of Contact Wire Hcw -->
-          <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80">
-            <div class="flex justify-between items-center mb-1">
-              <label for="inpHcw" class="text-xs font-semibold text-slate-700">Height of Contact Wire (<span class="font-mono text-sky-700">Hcw</span>)</label>
-              <div class="flex items-center gap-1">
-                <input id="inpHcw" type="number" min="4500" max="7600" step="10" value="5340" class="w-20 px-2 py-0.5 text-right font-mono text-xs font-bold border border-slate-300 rounded bg-white" />
-                <span class="text-xs font-mono text-slate-500">mm</span>
-              </div>
-            </div>
-            <input id="rngHcw" type="range" min="4500" max="7600" step="10" value="5340" class="w-full h-1.5 bg-slate-200 rounded-lg cursor-pointer" />
+        <div class="field-group">
+          <label for="seInput">Superelevation / Cant (Se, mm)</label>
+          <input id="seInput" type="number" min="0" max="200" step="1" value="52" />
+          <input id="seRange" type="range" min="0" max="200" step="1" value="52" />
+        </div>
+
+        <div class="field-group">
+          <label for="hcwInput">Height of Contact Wire (Hcw, mm)</label>
+          <input id="hcwInput" type="number" min="4500" max="6500" step="10" value="5340" />
+          <input id="hcwRange" type="range" min="4500" max="6500" step="10" value="5340" />
+        </div>
+
+        <div class="field-group">
+          <label for="mInput">Ground Plumb Dist. (±M from T℄ to Cw, mm)</label>
+          <input id="mInput" type="number" min="-500" max="500" step="1" value="133" />
+          <input id="mRange" type="range" min="-500" max="500" step="1" value="133" />
+        </div>
+      </section>
+
+      <section class="card" id="sec2" style="margin-top: 14px;">
+        <h2>2. Step-by-Step Back Calculation <span id="staggerStatus" class="badge-ok">OK</span></h2>
+
+        <div class="kpi-grid">
+          <div class="kpi-box">
+            <div class="kpi-label">Panto Axis Shift (Sd)</div>
+            <div class="kpi-val" id="sdVal">+166 mm</div>
+            <div class="kpi-sub" id="sdSub">Exact: 165.68 mm</div>
           </div>
-
-          <!-- Ground Measured Distance ±M -->
-          <div class="bg-amber-50/70 p-2.5 rounded-lg border border-amber-200">
-            <div class="flex justify-between items-center mb-1">
-              <label for="inpM" class="text-xs font-semibold text-slate-800">
-                Ground Plumb Dist. (<span class="font-mono text-amber-800">±M</span> from T℄ to Cw)
-              </label>
-              <div class="flex items-center gap-1">
-                <input id="inpM" type="number" min="-600" max="600" step="1" value="133" class="w-20 px-2 py-0.5 text-right font-mono text-xs font-bold border border-amber-400 rounded bg-white text-amber-900" />
-                <span class="text-xs font-mono text-slate-600">mm</span>
-              </div>
-            </div>
-            <input id="rngM" type="range" min="-500" max="500" step="1" value="133" class="w-full h-1.5 bg-amber-200 rounded-lg cursor-pointer" />
-            <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-1">
-              <span>-M (Towards Mast)</span>
-              <span>0 (At T℄)</span>
-              <span>+M (Away from Mast)</span>
-            </div>
+          <div class="kpi-box green">
+            <div class="kpi-label">Existing Stagger</div>
+            <div class="kpi-val" id="stagVal">+299 mm</div>
+            <div class="kpi-sub" id="stagSub">+ Away / - Towards Mast</div>
           </div>
+        </div>
 
-          <!-- Target Design Stagger (Reference) -->
-          <div class="flex items-center justify-between pt-1">
-            <label for="inpTarget" class="text-xs font-medium text-slate-600">Design / Target Stagger (Optional Ref):</label>
-            <div class="flex items-center gap-1">
-              <input id="inpTarget" type="number" min="-400" max="400" step="10" value="300" class="w-20 px-2 py-1 text-right font-mono text-xs font-semibold border border-slate-300 rounded bg-white" />
-              <span class="text-xs font-mono text-slate-500">mm</span>
-            </div>
+        <div class="calc-steps" id="calcSteps"></div>
+      </section>
+    </div>
+
+    <section class="card" id="sec3">
+      <h2>3. Cant &amp; Contact Wire Stagger Cross-Section</h2>
+      <div class="cad-wrap">
+        <svg id="cadSvg" viewBox="0 0 1100 660" xmlns="http://www.w3.org/2000/svg" aria-label="OHE Stagger and Cant Cross-Section"></svg>
+      </div>
+
+      <div class="legend-panel" id="legendPanel">
+        <div class="legend-title">Line Type Assignment Legend</div>
+        <div class="legend-grid">
+          <div class="legend-item">
+            <span class="legend-swatch" style="border-top-style: dash-dot; border-top-color: #dc2626;"></span>
+            <span>T℄ — Track Centre Line</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch" style="border-top-style: dashed; border-top-color: #7c3aed;"></span>
+            <span>P℄ — Pantograph Centre Line</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch" style="border-top-style: solid; border-top-color: #0284c7;"></span>
+            <span>Inclined Rail Level</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch" style="border-top-style: dash-dot; border-top-color: #0284c7;"></span>
+            <span>Perpendicular to Inclined Rail Level</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch" style="border-top-style: dashed; border-top-color: #d97706;"></span>
+            <span>Contact Wire Plumb Line</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch" style="border-top-style: dotted; border-top-color: #059669;"></span>
+            <span>P℄ Plumb Projection</span>
           </div>
         </div>
       </div>
-
-      <!-- Step-by-Step Calculation Card -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex-1">
-        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
-          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">2. Step-by-Step Back Calculation</h2>
-          <span id="statusBadge" class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
-            WITHIN LIMIT
-          </span>
-        </div>
-
-        <!-- Primary Output KPIs -->
-        <div class="grid grid-cols-2 gap-2.5 mb-3">
-          <div class="p-2.5 rounded-lg bg-slate-900 text-white border border-slate-700">
-            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Panto Axis Shift (Sd)</div>
-            <div id="outSd" class="text-lg font-mono font-bold text-sky-400 mt-0.5">+167 mm</div>
-            <div id="outSdExact" class="text-[10px] font-mono text-slate-400">Exact: 165.68 mm</div>
-          </div>
-
-          <div class="p-2.5 rounded-lg bg-emerald-950 text-white border border-emerald-800">
-            <div class="text-[10px] uppercase tracking-wider text-emerald-300 font-semibold">Existing Stagger (w.r.t P℄)</div>
-            <div id="outStagger" class="text-lg font-mono font-bold text-emerald-400 mt-0.5">+300 mm</div>
-            <div id="outDiff" class="text-[10px] font-mono text-emerald-200">Target Dev: 0 mm</div>
-          </div>
-        </div>
-
-        <!-- Detailed Formula Steps -->
-        <div id="calcStepsBox" class="space-y-2 text-xs font-mono bg-slate-50 p-3 rounded-lg border border-slate-200 text-slate-800 leading-relaxed">
-          <!-- Populated dynamically by JS -->
-        </div>
-
-        <!-- Safety Reminder -->
-        <div class="mt-3 p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-[11px] text-rose-900 leading-snug">
-          <strong>Safety Protocol:</strong> Drop plumb bob from contact wire to mark <strong>Cw</strong> on sleeper <em>only</em> after obtaining valid Power Block, testing line dead, and clamping Discharge Rods on both sides.
-        </div>
-      </div>
-
-    </section>
-
-    <!-- Right Main Panel: Interactive CAD Drawing Canvas & Linetype Legend -->
-    <section class="lg:col-span-8 flex flex-col gap-4">
-
-      <!-- CAD Viewport Frame -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden flex flex-col flex-1">
-        <!-- CAD Title Strip -->
-        <div class="bg-slate-800 text-slate-200 px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs font-mono border-b border-slate-700">
-          <div class="flex items-center gap-2">
-            <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span id="cadHeaderTitle" class="font-semibold text-white">DWG: BHEEMA BRIDGE | UP LINE | MAST 257/03</span>
-          </div>
-          <div class="flex items-center gap-3 text-[11px] text-slate-300">
-            <span id="cadHeaderScale">CANT ANGLE: 1.78° (VISUAL 4×)</span>
-            <span>|</span>
-            <span>ALL DIMS IN MM</span>
-          </div>
-        </div>
-
-        <!-- Responsive SVG Canvas Container -->
-        <div id="canvasWrapper" class="relative w-full flex-1 min-h-[540px] sm:min-h-[620px] cad-grid-light flex items-center justify-center overflow-hidden select-none">
-          <svg id="cadSvg" viewBox="0 0 1000 720" class="w-full h-full max-h-[740px]" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <!-- Arrowhead Markers -->
-              <marker id="arrowStart" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 10 1 L 0 5 L 10 9 z" fill="currentColor" class="dim-arrow-fill" />
-              </marker>
-              <marker id="arrowEnd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="currentColor" class="dim-arrow-fill" />
-              </marker>
-              <!-- Specific Colored Markers -->
-              <marker id="arrowBlueStart" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 10 1.5 L 0 5 L 10 8.5 z" fill="#0284c7" />
-              </marker>
-              <marker id="arrowBlueEnd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#0284c7" />
-              </marker>
-              <marker id="arrowAmberStart" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 10 1.5 L 0 5 L 10 8.5 z" fill="#d97706" />
-              </marker>
-              <marker id="arrowAmberEnd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#d97706" />
-              </marker>
-              <marker id="arrowEmeraldStart" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 10 1.5 L 0 5 L 10 8.5 z" fill="#059669" />
-              </marker>
-              <marker id="arrowEmeraldEnd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#059669" />
-              </marker>
-              <marker id="arrowRoseStart" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 10 1.5 L 0 5 L 10 8.5 z" fill="#e11d48" />
-              </marker>
-              <marker id="arrowRoseEnd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#e11d48" />
-              </marker>
-            </defs>
-
-            <!-- Dynamic CAD Layers Rendered via JavaScript -->
-            <g id="layerBackdrop"></g>
-            <g id="layerMastAndCantilever"></g>
-            <g id="layerTrackAndRails"></g>
-            <g id="layerCenterAndPlumbLines"></g>
-            <g id="layerPantographAndWire"></g>
-            <g id="layerDimensionsAndCallouts"></g>
-            <g id="layerTitleBlock"></g>
-          </svg>
-        </div>
-
-        <!-- Standard Linetype Legend Bar -->
-        <div class="bg-slate-50 border-t border-slate-200 px-4 py-3">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-700">
-              Standard Linetype Assignment Legend
-            </span>
-            <span class="text-[11px] font-mono text-slate-500">
-              Symbols: T℄ = Track Centre | P℄ = Panto Centre | Cw = Plumb Mark on Sleeper | 0 = Panto Axis
-            </span>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 text-xs font-mono">
-            <!-- 1. Track Centre Line -->
-            <div class="flex items-center justify-between gap-2 bg-white px-2.5 py-1.5 rounded border border-slate-200">
-              <span class="text-slate-700 font-semibold truncate">T℄ — Track Centre Line</span>
-              <div class="flex items-center gap-2 shrink-0">
-                <svg width="76" height="10"><line x1="0" y1="5" x2="76" y2="5" stroke="#dc2626" stroke-width="2" stroke-dasharray="14 3 3 3" /></svg>
-              </div>
-            </div>
-
-            <!-- 2. Pantograph Centre Line -->
-            <div class="flex items-center justify-between gap-2 bg-white px-2.5 py-1.5 rounded border border-slate-200">
-              <span class="text-slate-700 font-semibold truncate">P℄ — Pantograph Centre Line</span>
-              <div class="flex items-center gap-2 shrink-0">
-                <svg width="76" height="10"><line x1="0" y1="5" x2="76" y2="5" stroke="#0284c7" stroke-width="2.2" stroke-dasharray="32 5 5 5" /></svg>
-              </div>
-            </div>
-
-            <!-- 3. Inclined Rail Level -->
-            <div class="flex items-center justify-between gap-2 bg-white px-2.5 py-1.5 rounded border border-slate-200">
-              <span class="text-slate-700 font-semibold truncate">Inclined Rail Level</span>
-              <div class="flex items-center gap-2 shrink-0">
-                <svg width="76" height="10"><line x1="0" y1="5" x2="76" y2="5" stroke="#0f172a" stroke-width="2.2" /></svg>
-              </div>
-            </div>
-
-            <!-- 4. Perpendicular to Inclined Rail Level -->
-            <div class="flex items-center justify-between gap-2 bg-white px-2.5 py-1.5 rounded border border-slate-200">
-              <span class="text-slate-700 font-semibold truncate">Perpendicular to Inclined Rail Level</span>
-              <div class="flex items-center gap-2 shrink-0">
-                <svg width="76" height="10"><line x1="0" y1="5" x2="76" y2="5" stroke="#0284c7" stroke-width="2" /></svg>
-              </div>
-            </div>
-
-            <!-- 5. Contact Wire Plumb Line -->
-            <div class="flex items-center justify-between gap-2 bg-white px-2.5 py-1.5 rounded border border-slate-200">
-              <span class="text-slate-700 font-semibold truncate">Contact Wire Plumb Line</span>
-              <div class="flex items-center gap-2 shrink-0">
-                <svg width="76" height="10"><line x1="0" y1="5" x2="76" y2="5" stroke="#d97706" stroke-width="2" stroke-dasharray="5 3" /></svg>
-              </div>
-            </div>
-
-            <!-- 6. Panto Centre Marking from Panto to Track -->
-            <div class="flex items-center justify-between gap-2 bg-white px-2.5 py-1.5 rounded border border-slate-200">
-              <span class="text-slate-700 font-semibold truncate">P℄ Plumb Projection</span>
-              <div class="flex items-center gap-2 shrink-0">
-                <svg width="76" height="10"><line x1="0" y1="5" x2="76" y2="5" stroke="#7c3aed" stroke-width="2.2" stroke-dasharray="1.5 5" stroke-linecap="round" /></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </section>
   </main>
 
-  <!-- Engineering Footer Bar -->
-  <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 px-4 py-2.5 text-xs font-mono">
-    <div class="max-w-screen-2xl mx-auto flex flex-wrap items-center justify-between gap-2">
-      <span>Indian Railways Traction Distribution (TRD) — OHE Geometry &amp; Stagger Verification Tool</span>
-      <span class="text-slate-200 font-semibold">Created by Sandeep Mushini | SSE / TRD / IDR / UBL / SWR</span>
-    </div>
+  <footer class="app-footer no-print">
+    Created by Sandeep Mushini | SSE / TRD / IDR / UBL / SWR — Indian Railways OHE Stagger &amp; Cant Visualizer
   </footer>
 
-  <!-- Toast Notification Box -->
-  <div id="toastBox" class="fixed bottom-4 right-4 z-50 hidden bg-slate-900 text-white text-xs font-mono px-4 py-2.5 rounded-lg shadow-lg border border-slate-700"></div>
-
   <script>
-    // Application State
-    const state = {
-      section: 'Bheema Bridge',
-      line: 'UP Line',
-      mast: '257/03',
-      mastSide: 'inside', // 'inside' | 'outside' | 'tangent'
-      gauge: 1676,        // 1676 or 1750
-      se: 52,             // Superelevation in mm
-      hcw: 5340,          // Height of Contact Wire in mm
-      mVal: 133,          // ±M from T℄ to Cw in mm
-      targetStagger: 300,
-      blueprintMode: false,
-      tiltExaggeration: 4
-    };
-
-    // DOM Element References
-    const els = {
-      inpSection: document.getElementById('inpSection'),
-      inpLine: document.getElementById('inpLine'),
-      inpMast: document.getElementById('inpMast'),
-      inpSe: document.getElementById('inpSe'),
-      rngSe: document.getElementById('rngSe'),
-      inpHcw: document.getElementById('inpHcw'),
-      rngHcw: document.getElementById('rngHcw'),
-      inpM: document.getElementById('inpM'),
-      rngM: document.getElementById('rngM'),
-      inpTarget: document.getElementById('inpTarget'),
-      mastSideHint: document.getElementById('mastSideHint'),
-      outSd: document.getElementById('outSd'),
-      outSdExact: document.getElementById('outSdExact'),
-      outStagger: document.getElementById('outStagger'),
-      outDiff: document.getElementById('outDiff'),
-      statusBadge: document.getElementById('statusBadge'),
-      calcStepsBox: document.getElementById('calcStepsBox'),
-      cadHeaderTitle: document.getElementById('cadHeaderTitle'),
-      cadHeaderScale: document.getElementById('cadHeaderScale'),
-      canvasWrapper: document.getElementById('canvasWrapper'),
-      cadSvg: document.getElementById('cadSvg'),
-      btnSheetTheme: document.getElementById('btnSheetTheme'),
-      themeDot: document.getElementById('themeDot'),
-      themeLabel: document.getElementById('themeLabel'),
-      btnExaggeration: document.getElementById('btnExaggeration'),
-      tiltScaleLabel: document.getElementById('tiltScaleLabel'),
-      btnResetPreset: document.getElementById('btnResetPreset'),
-      btnDownloadPDF: document.getElementById('btnDownloadPDF'),
-      btnDownloadPNG: document.getElementById('btnDownloadPNG'),
-      toastBox: document.getElementById('toastBox')
-    };
-
-    function showToast(msg) {
-      els.toastBox.textContent = msg;
-      els.toastBox.classList.remove('hidden');
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => {
-        els.toastBox.classList.add('hidden');
-      }, 3000);
-    }
-
-    function fmtSigned(val, decimals = 0) {
-      const fixed = Number(val).toFixed(decimals);
-      return Number(fixed) > 0 ? `+${fixed}` : `${fixed}`;
-    }
-
-    function computeEngineering() {
-      const effectiveSe = state.mastSide === 'tangent' ? 0 : state.se;
-      const sdExact = (state.hcw * effectiveSe) / state.gauge;
-      const sdRounded = Math.round(sdExact);
-
-      let existingStaggerExact = state.mVal;
-      let operationSign = '+';
-      let pantoShiftSigned = 0;
-
-      if (state.mastSide === 'inside' && effectiveSe > 0) {
-        pantoShiftSigned = -sdRounded;
-        existingStaggerExact = state.mVal + sdRounded;
-        operationSign = '+';
-      } else if (state.mastSide === 'outside' && effectiveSe > 0) {
-        pantoShiftSigned = +sdRounded;
-        existingStaggerExact = state.mVal - sdRounded;
-        operationSign = '-';
-      } else {
-        pantoShiftSigned = 0;
-        existingStaggerExact = state.mVal;
-        operationSign = '+';
-      }
-
-      const existingStagger = Math.round(existingStaggerExact);
-      const deviation = existingStagger - state.targetStagger;
-      const trueAngleDeg = (Math.asin(Math.min(effectiveSe / state.gauge, 0.99)) * 180) / Math.PI;
-
-      return {
-        effectiveSe,
-        sdExact,
-        sdRounded,
-        pantoShiftSigned,
-        existingStagger,
-        operationSign,
-        deviation,
-        trueAngleDeg
-      };
-    }
-
-    function svgEl(tag, attrs = {}, textContent = null) {
-      const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
-      for (const [k, v] of Object.entries(attrs)) {
-        el.setAttribute(k, v);
-      }
-      if (textContent !== null) {
-        el.textContent = textContent;
-      }
-      return el;
-    }
-
-    function drawRailProfile(parent, topX, topY, angleRad, strokeColor, fillColor) {
-      const deg = (angleRad * 180) / Math.PI;
-      const g = svgEl('g', {
-        transform: `translate(${topX.toFixed(2)}, ${topY.toFixed(2)}) rotate(${deg.toFixed(3)})`
-      });
-
-      const railPath = `
-        M -12,0
-        L 12,0
-        Q 14,0 14,3
-        L 14,11
-        Q 14,13 10,14
-        L 4,15
-        L 4,34
-        L 18,38
-        L 18,43
-        L -18,43
-        L -18,38
-        L -4,34
-        L -4,15
-        L -10,14
-        Q -14,13 -14,11
-        L -14,3
-        Q -14,0 -12,0
-        Z
-      `;
-      g.appendChild(svgEl('path', {
-        d: railPath.trim(),
-        fill: fillColor,
-        stroke: strokeColor,
-        'stroke-width': '1.8',
-        'stroke-linejoin': 'round'
-      }));
-
-      g.appendChild(svgEl('circle', {
-        cx: 0,
-        cy: 0,
-        r: 2.5,
-        fill: '#ef4444'
-      }));
-
-      parent.appendChild(g);
-    }
-
-    function drawHorizontalDim(parent, x1, x2, y, extFromY1, extFromY2, label, color, markerStartId, markerEndId, labelOffsetY = -8, isBlueprint = false) {
-      const g = svgEl('g');
-
-      if (extFromY1 !== null) {
-        g.appendChild(svgEl('line', {
-          x1: x1, y1: extFromY1, x2: x1, y2: y + (y > extFromY1 ? 5 : -5),
-          stroke: color, 'stroke-width': '1', 'stroke-opacity': '0.65'
-        }));
-      }
-      if (extFromY2 !== null) {
-        g.appendChild(svgEl('line', {
-          x1: x2, y1: extFromY2, x2: x2, y2: y + (y > extFromY2 ? 5 : -5),
-          stroke: color, 'stroke-width': '1', 'stroke-opacity': '0.65'
-        }));
-      }
-
-      const dist = Math.abs(x2 - x1);
-      if (dist >= 14) {
-        g.appendChild(svgEl('line', {
-          x1: x1, y1: y, x2: x2, y2: y,
-          stroke: color,
-          'stroke-width': '1.6',
-          'marker-start': `url(#${markerStartId})`,
-          'marker-end': `url(#${markerEndId})`
-        }));
-      } else {
-        g.appendChild(svgEl('line', {
-          x1: x1 - 14, y1: y, x2: x2 + 14, y2: y,
-          stroke: color,
-          'stroke-width': '1.5'
-        }));
-        g.appendChild(svgEl('circle', { cx: x1, cy: y, r: 2.2, fill: color }));
-        g.appendChild(svgEl('circle', { cx: x2, cy: y, r: 2.2, fill: color }));
-      }
-
-      const midX = (x1 + x2) / 2;
-      const textY = y + labelOffsetY;
-      const approxW = label.length * 7.2 + 12;
-
-      g.appendChild(svgEl('rect', {
-        x: midX - approxW / 2,
-        y: textY - 11,
-        width: approxW,
-        height: 15,
-        rx: 3,
-        fill: isBlueprint ? '#0b192c' : '#ffffff',
-        'fill-opacity': '0.92',
-        stroke: color,
-        'stroke-width': '0.8'
-      }));
-
-      g.appendChild(svgEl('text', {
-        x: midX,
-        y: textY,
-        'text-anchor': 'middle',
-        fill: color,
-        'font-family': 'JetBrains Mono, monospace',
-        'font-size': '11.5',
-        'font-weight': '700'
-      }, label));
-
-      parent.appendChild(g);
-    }
-
-    function renderAll() {
-      const calc = computeEngineering();
-      const bp = state.blueprintMode;
-
-      els.outSd.textContent = `${fmtSigned(calc.sdRounded)} mm`;
-      els.outSdExact.textContent = `Exact: ${calc.sdExact.toFixed(2)} mm (${state.gauge} mm G)`;
-      els.outStagger.textContent = `${fmtSigned(calc.existingStagger)} mm`;
-      els.outDiff.textContent = `vs Target (${fmtSigned(state.targetStagger)}): ${fmtSigned(calc.deviation)} mm`;
-
-      const maxPermissible = state.mastSide === 'tangent' ? 200 : 300;
-      const absStagger = Math.abs(calc.existingStagger);
-      if (absStagger <= maxPermissible) {
-        els.statusBadge.textContent = `OK (≤ ±${maxPermissible} mm)`;
-        els.statusBadge.className = 'text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300';
-      } else {
-        els.statusBadge.textContent = `EXCEEDS ±${maxPermissible} mm`;
-        els.statusBadge.className = 'text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-300';
-      }
-
-      if (state.mastSide === 'inside') {
-        els.mastSideHint.textContent = 'Mast on INSIDE of curve (lower rail side, Right). P℄ tilts towards mast → ADD Sd to ±M.';
-      } else if (state.mastSide === 'outside') {
-        els.mastSideHint.textContent = 'Mast on OUTSIDE of curve (higher rail side, Right). P℄ tilts away from mast → SUBTRACT Sd from ±M.';
-      } else {
-        els.mastSideHint.textContent = 'Tangent / Straight Track (Se = 0 mm). P℄ coincides with T℄ → Stagger equals ±M.';
-      }
-
-      let step3Html = '';
-      if (state.mastSide === 'inside' && calc.effectiveSe > 0) {
-        step3Html = `
-          <div><strong class="text-sky-700">Step 3 (Apply Sign Rule — Mast on INSIDE):</strong></div>
-          <div>• P℄ tilts towards inside rail (towards Mast) by <span class="text-violet-700 font-bold">${calc.sdRounded} mm</span>.</div>
-          <div>• Therefore, <strong>ADD Sd</strong> to ground measurement (±M):</div>
-          <div class="mt-1 p-2 rounded bg-emerald-50 border border-emerald-200 text-emerald-950 font-bold">
-            Existing Stagger = (±M) + Sd<br/>
-            = (${fmtSigned(state.mVal)}) + (${calc.sdRounded}) = <span class="text-emerald-700 text-sm">${fmtSigned(calc.existingStagger)} mm</span>
-          </div>
-        `;
-      } else if (state.mastSide === 'outside' && calc.effectiveSe > 0) {
-        step3Html = `
-          <div><strong class="text-sky-700">Step 3 (Apply Sign Rule — Mast on OUTSIDE):</strong></div>
-          <div>• P℄ tilts towards inside rail (away from Mast) by <span class="text-violet-700 font-bold">${calc.sdRounded} mm</span>.</div>
-          <div>• Therefore, <strong>SUBTRACT Sd</strong> from ground measurement (±M):</div>
-          <div class="mt-1 p-2 rounded bg-emerald-50 border border-emerald-200 text-emerald-950 font-bold">
-            Existing Stagger = (±M) - Sd<br/>
-            = (${fmtSigned(state.mVal)}) - (${calc.sdRounded}) = <span class="text-emerald-700 text-sm">${fmtSigned(calc.existingStagger)} mm</span>
-          </div>
-        `;
-      } else {
-        step3Html = `
-          <div><strong class="text-sky-700">Step 3 (Tangent Track — No Cant):</strong></div>
-          <div>• Since Se = 0 mm, P℄ aligns vertically with T℄ (Sd = 0 mm).</div>
-          <div class="mt-1 p-2 rounded bg-emerald-50 border border-emerald-200 text-emerald-950 font-bold">
-            Existing Stagger = ±M = <span class="text-emerald-700 text-sm">${fmtSigned(calc.existingStagger)} mm</span>
-          </div>
-        `;
-      }
-
-      els.calcStepsBox.innerHTML = `
-        <div><strong class="text-sky-700">Step 1 (Pantograph Axis Shift Sd):</strong></div>
-        <div>Sd = (Hcw × Se) / G = (${state.hcw} × ${calc.effectiveSe}) / ${state.gauge} = <strong>${calc.sdExact.toFixed(2)} mm ≈ ${calc.sdRounded} mm</strong></div>
-        <div class="border-t border-slate-200 pt-1.5"><strong class="text-sky-700">Step 2 (Sleeper Plumb Measurement ±M):</strong></div>
-        <div>• Track Centre (T℄) to Plumb Point (Cw) = <strong>${fmtSigned(state.mVal)} mm</strong> (${state.mVal >= 0 ? 'Away from Mast' : 'Towards Mast'})</div>
-        <div class="border-t border-slate-200 pt-1.5">${step3Html}</div>
-      `;
-
-      els.cadHeaderTitle.textContent = `DWG: ${state.section.toUpperCase()} | ${state.line.toUpperCase()} | MAST ${state.mast.toUpperCase()}`;
-      els.cadHeaderScale.textContent = `CANT: ${calc.effectiveSe} MM (${calc.trueAngleDeg.toFixed(2)}° | VISUAL ${state.tiltExaggeration}×)`;
-
-      const layers = {
-        backdrop: document.getElementById('layerBackdrop'),
-        mast: document.getElementById('layerMastAndCantilever'),
-        track: document.getElementById('layerTrackAndRails'),
-        lines: document.getElementById('layerCenterAndPlumbLines'),
-        panto: document.getElementById('layerPantographAndWire'),
-        dims: document.getElementById('layerDimensionsAndCallouts'),
-        title: document.getElementById('layerTitleBlock')
-      };
-      Object.values(layers).forEach(l => (l.innerHTML = ''));
-
-      const pal = bp ? {
-        ink: '#e2e8f0',
-        muted: '#94a3b8',
-        railFill: '#1e293b',
-        railStroke: '#38bdf8',
-        sleeperFill: '#0f2942',
-        sleeperStroke: '#38bdf8',
-        tcColor: '#f87171',
-        pcColor: '#38bdf8',
-        perpColor: '#38bdf8',
-        plumbColor: '#fbbf24',
-        dotColor: '#c084fc',
-        seDatumColor: '#94a3b8',
-        pantoStroke: '#e2e8f0',
-        pantoFill: '#334155',
-        wireFill: '#fbbf24',
-        wireStroke: '#ffffff',
-        mastStroke: '#64748b',
-        boxBg: '#0f2942',
-        boxBorder: '#38bdf8'
-      } : {
-        ink: '#0f172a',
-        muted: '#475569',
-        railFill: '#cbd5e1',
-        railStroke: '#0f172a',
-        sleeperFill: '#e2e8f0',
-        sleeperStroke: '#334155',
-        tcColor: '#dc2626',
-        pcColor: '#0284c7',
-        perpColor: '#0284c7',
-        plumbColor: '#d97706',
-        dotColor: '#7c3aed',
-        seDatumColor: '#64748b',
-        pantoStroke: '#0f172a',
-        pantoFill: '#475569',
-        wireFill: '#0f172a',
-        wireStroke: '#f59e0b',
-        mastStroke: '#334155',
-        boxBg: '#ffffff',
-        boxBorder: '#cbd5e1'
+    (function () {
+      const state = {
+        bridge: 'Bheema Bridge',
+        line: 'UP Line',
+        mast: '257/03',
+        pos: 'inside',
+        gauge: 1676,
+        se: 52,
+        hcw: 5340,
+        m: 133,
+        darkSheet: false,
+        cantScale: 4
       };
 
-      const tcX = 445;
-      const railMidY = 530;
-      const halfGaugePx = 152;
-      const hScale = halfGaugePx / (state.gauge / 2);
+      const el = (id) => document.getElementById(id);
+      const fmtSigned = (n) => (n >= 0 ? `+${Math.round(n)}` : `${Math.round(n)}`) + ' mm';
 
-      const pantoBaseY = 175;
-      const verticalSpanPx = railMidY - pantoBaseY;
+      function compute() {
+        const se = Number(state.se) || 0;
+        const hcw = Number(state.hcw) || 5340;
+        const g = Number(state.gauge) || 1676;
+        const m = Number(state.m) || 0;
 
-      const rawSin = calc.effectiveSe / state.gauge;
-      const visualSin = Math.min(rawSin * state.tiltExaggeration, 0.28);
-      const visualAngleMag = Math.asin(visualSin);
+        const sdExact = ((hcw + se) / g) * se;
+        const sd = Math.round(sdExact);
+        const stagger = state.pos === 'outside' ? m - sd : m + sd;
 
-      let tiltAngle = 0;
-      if (state.mastSide === 'inside' && calc.effectiveSe > 0) {
-        tiltAngle = +visualAngleMag;
-      } else if (state.mastSide === 'outside' && calc.effectiveSe > 0) {
-        tiltAngle = -visualAngleMag;
-      } else {
-        tiltAngle = 0;
+        return { se, hcw, g, m, sdExact, sd, stagger };
       }
 
-      const cosA = Math.cos(tiltAngle);
-      const sinA = Math.sin(tiltAngle);
-
-      const leftRailX = tcX - halfGaugePx * cosA;
-      const leftRailY = railMidY - halfGaugePx * sinA;
-      const rightRailX = tcX + halfGaugePx * cosA;
-      const rightRailY = railMidY + halfGaugePx * sinA;
-
-      // MAST ASSEMBLY
-      const mastX = 885;
-      const mastBaseY = 585;
-      const mastTopY = 55;
-
-      layers.mast.appendChild(svgEl('rect', {
-        x: mastX - 24, y: mastBaseY - 22, width: 48, height: 32, rx: 3,
-        fill: pal.sleeperFill, stroke: pal.mastStroke, 'stroke-width': '1.8'
-      }));
-      layers.mast.appendChild(svgEl('line', {
-        x1: mastX - 40, y1: mastBaseY + 10, x2: mastX + 40, y2: mastBaseY + 10,
-        stroke: pal.mastStroke, 'stroke-width': '2'
-      }));
-
-      layers.mast.appendChild(svgEl('line', { x1: mastX - 8, y1: mastBaseY - 22, x2: mastX - 6, y2: mastTopY, stroke: pal.mastStroke, 'stroke-width': '2.2' }));
-      layers.mast.appendChild(svgEl('line', { x1: mastX + 8, y1: mastBaseY - 22, x2: mastX + 6, y2: mastTopY, stroke: pal.mastStroke, 'stroke-width': '2.2' }));
-      let lacingD = `M ${mastX - 8},${mastBaseY - 25}`;
-      for (let y = mastBaseY - 45; y >= mastTopY + 10; y -= 24) {
-        const side = ((mastBaseY - y) / 24) % 2 === 0 ? -7 : 7;
-        lacingD += ` L ${mastX + side},${y}`;
-      }
-      layers.mast.appendChild(svgEl('path', {
-        d: lacingD, fill: 'none', stroke: pal.mastStroke, 'stroke-width': '1.2', 'stroke-opacity': '0.75'
-      }));
-
-      // 2. MAST NUMBERING PLATE (AUTHENTIC IR BLUE PLATE WITH YELLOW FRACTION TEXT)
-      // Positioned at the vertical centre of the mast (between mastTopY and mastBaseY).
-      const plateW = 44;
-      const plateH = 40;
-      const plateX = mastX - plateW / 2;
-      const mastCenterY = (mastTopY + mastBaseY) / 2;
-      const plateY = mastCenterY - plateH / 2;
-
-      const mastParts = state.mast.split('/');
-      const mastTopNum = mastParts[0] || state.mast;
-      const mastBotNum = mastParts[1] || '';
-
-      layers.mast.appendChild(svgEl('rect', {
-        x: plateX, y: plateY, width: plateW, height: plateH, rx: 4,
-        fill: '#1d4ed8', stroke: '#1e3a8a', 'stroke-width': '1.8'
-      }));
-
-      layers.mast.appendChild(svgEl('text', {
-        x: mastX, y: plateY + 14, 'text-anchor': 'middle',
-        fill: '#facc15', 'font-family': 'JetBrains Mono, monospace', 'font-size': '12', 'font-weight': '800'
-      }, mastTopNum));
-
-      layers.mast.appendChild(svgEl('line', {
-        x1: plateX + 6, y1: plateY + 19, x2: plateX + plateW - 6, y2: plateY + 19,
-        stroke: '#facc15', 'stroke-width': '1.5'
-      }));
-
-      if (mastBotNum) {
-        layers.mast.appendChild(svgEl('text', {
-          x: mastX, y: plateY + 33, 'text-anchor': 'middle',
-          fill: '#facc15', 'font-family': 'JetBrains Mono, monospace', 'font-size': '12', 'font-weight': '800'
-        }, mastBotNum));
-      }
-
-      // 3. CURVE POSITION REPRESENTATION (INSIDE / OUTSIDE CURVE INDICATOR)
-      const curveBadgeText = state.mastSide === 'inside'
-        ? 'INSIDE CURVE (MAST)'
-        : state.mastSide === 'outside'
-          ? 'OUTSIDE CURVE (MAST)'
-          : 'TANGENT TRACK';
-
-      layers.mast.appendChild(svgEl('text', {
-        x: mastX, y: plateY - 12, 'text-anchor': 'middle',
-        fill: pal.pcColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10.5', 'font-weight': '700'
-      }, curveBadgeText));
-
-      // TRACK & RAILS
-      const sleeperHalfLen = halfGaugePx + 62;
-      const slpTopLeftX = tcX - sleeperHalfLen * cosA;
-      const slpTopLeftY = railMidY - sleeperHalfLen * sinA + 43 * cosA;
-      const slpTopRightX = tcX + sleeperHalfLen * cosA;
-      const slpTopRightY = railMidY + sleeperHalfLen * sinA + 43 * cosA;
-      const sleeperThick = 24;
-      const slpBotRightX = slpTopRightX - sleeperThick * sinA;
-      const slpBotRightY = slpTopRightY + sleeperThick * cosA;
-      const slpBotLeftX = slpTopLeftX - sleeperThick * sinA;
-      const slpBotLeftY = slpTopLeftY + sleeperThick * cosA;
-
-      layers.track.appendChild(svgEl('polygon', {
-        points: `${slpTopLeftX.toFixed(1)},${slpTopLeftY.toFixed(1)} ${slpTopRightX.toFixed(1)},${slpTopRightY.toFixed(1)} ${slpBotRightX.toFixed(1)},${slpBotRightY.toFixed(1)} ${slpBotLeftX.toFixed(1)},${slpBotLeftY.toFixed(1)}`,
-        fill: pal.sleeperFill,
-        stroke: pal.sleeperStroke,
-        'stroke-width': '1.5'
-      }));
-
-      drawRailProfile(layers.track, leftRailX, leftRailY, tiltAngle, pal.railStroke, pal.railFill);
-      drawRailProfile(layers.track, rightRailX, rightRailY, tiltAngle, pal.railStroke, pal.railFill);
-
-      // Inclined Rail Level Line
-      const railLineExt = 52;
-      const rlStartX = tcX - (halfGaugePx + railLineExt) * cosA;
-      const rlStartY = railMidY - (halfGaugePx + railLineExt) * sinA;
-      const rlEndX = tcX + (halfGaugePx + railLineExt) * cosA;
-      const rlEndY = railMidY + (halfGaugePx + railLineExt) * sinA;
-
-      layers.track.appendChild(svgEl('line', {
-        x1: rlStartX, y1: rlStartY, x2: rlEndX, y2: rlEndY,
-        stroke: pal.ink,
-        'stroke-width': '2.4'
-      }));
-
-      layers.track.appendChild(svgEl('text', {
-        x: rlStartX - 6, y: rlStartY - 8, 'text-anchor': 'start',
-        fill: pal.ink, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10.5', 'font-weight': '600'
-      }, 'INCLINED RAIL LEVEL'));
-
-      if (calc.effectiveSe > 0) {
-        const isLeftHigh = state.mastSide === 'inside';
-        const highRailX = isLeftHigh ? leftRailX : rightRailX;
-        const highRailY = isLeftHigh ? leftRailY : rightRailY;
-        const lowRailX = isLeftHigh ? rightRailX : leftRailX;
-        const lowRailY = isLeftHigh ? rightRailY : leftRailY;
-        const dimX = isLeftHigh ? leftRailX - 36 : rightRailX + 36;
-
-        layers.track.appendChild(svgEl('line', {
-          x1: lowRailX, y1: lowRailY,
-          x2: dimX + (isLeftHigh ? -8 : 8), y2: lowRailY,
-          stroke: pal.seDatumColor,
-          'stroke-width': '1.6',
-          'stroke-dasharray': '10 5'
-        }));
-
-        layers.track.appendChild(svgEl('line', {
-          x1: highRailX, y1: highRailY,
-          x2: dimX + (isLeftHigh ? -8 : 8), y2: highRailY,
-          stroke: pal.seDatumColor,
-          'stroke-width': '1.2'
-        }));
-
-        layers.track.appendChild(svgEl('line', {
-          x1: dimX, y1: highRailY,
-          x2: dimX, y2: lowRailY,
-          stroke: '#e11d48',
-          'stroke-width': '1.8',
-          'marker-start': 'url(#arrowRoseStart)',
-          'marker-end': 'url(#arrowRoseEnd)'
-        }));
-
-        const seMidY = (highRailY + lowRailY) / 2;
-        const labelX = isLeftHigh ? dimX - 10 : dimX + 10;
-        const anchor = isLeftHigh ? 'end' : 'start';
-        const triX = isLeftHigh ? labelX - 78 : labelX + 78;
-
-        layers.track.appendChild(svgEl('polygon', {
-          points: isLeftHigh
-            ? `${triX},${seMidY + 5} ${triX + 16},${seMidY + 5} ${triX + 16},${seMidY - 5}`
-            : `${triX},${seMidY + 5} ${triX - 16},${seMidY + 5} ${triX - 16},${seMidY - 5}`,
-          fill: 'none',
-          stroke: '#e11d48',
-          'stroke-width': '1.4'
-        }));
-
-        layers.track.appendChild(svgEl('text', {
-          x: labelX, y: seMidY + 4, 'text-anchor': anchor,
-          fill: '#e11d48', 'font-family': 'JetBrains Mono, monospace', 'font-size': '12', 'font-weight': '700'
-        }, `Se = ${calc.effectiveSe} mm`));
-      }
-
-      // CENTRE & PLUMB LINES
-      const tcTopY = 75;
-      const tcBotY = 640;
-      layers.lines.appendChild(svgEl('line', {
-        x1: tcX, y1: tcTopY, x2: tcX, y2: tcBotY,
-        stroke: pal.tcColor,
-        'stroke-width': '2.1',
-        'stroke-dasharray': '14 3 3 3'
-      }));
-
-      layers.lines.appendChild(svgEl('text', {
-        x: tcX, y: tcTopY - 8, 'text-anchor': 'middle',
-        fill: pal.tcColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '13', 'font-weight': '700'
-      }, 'T℄'));
-
-      layers.lines.appendChild(svgEl('circle', {
-        cx: tcX, cy: railMidY, r: 4,
-        fill: pal.tcColor, stroke: pal.boxBg, 'stroke-width': '1.2'
-      }));
-      layers.lines.appendChild(svgEl('text', {
-        x: tcX + (state.mVal >= 0 ? 8 : -8), y: railMidY + 18,
-        'text-anchor': state.mVal >= 0 ? 'start' : 'end',
-        fill: pal.tcColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '12', 'font-weight': '700'
-      }, 'T℄'));
-
-      const pantoCenterDir = state.mastSide === 'inside' ? +1 : (state.mastSide === 'outside' ? -1 : 0);
-      const perpLen = verticalSpanPx / Math.max(cosA, 0.85);
-      const pcZeroX = tcX + perpLen * sinA;
-      const pcZeroY = railMidY - perpLen * cosA;
-
-      const pcExtTopX = tcX + (perpLen + 75) * sinA;
-      const pcExtTopY = railMidY - (perpLen + 75) * cosA;
-
-      layers.lines.appendChild(svgEl('line', {
-        x1: tcX, y1: railMidY,
-        x2: pcExtTopX, y2: pcExtTopY,
-        stroke: pal.pcColor,
-        'stroke-width': '2.3',
-        'stroke-dasharray': '36 6 6 6'
-      }));
-
-      layers.lines.appendChild(svgEl('text', {
-        x: pcExtTopX + (pantoCenterDir >= 0 ? 8 : -8),
-        y: pcExtTopY - 4,
-        'text-anchor': pantoCenterDir >= 0 ? 'start' : 'end',
-        fill: pal.pcColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '13', 'font-weight': '700'
-      }, 'P℄'));
-
-      const sqSize = 18;
-      const dirSign = pantoCenterDir >= 0 ? 1 : -1;
-      const p1x = tcX + dirSign * sqSize * cosA;
-      const p1y = railMidY + dirSign * sqSize * sinA;
-      const p2x = p1x + sqSize * sinA;
-      const p2y = p1y - sqSize * cosA;
-      const p3x = tcX + sqSize * sinA;
-      const p3y = railMidY - sqSize * cosA;
-
-      layers.lines.appendChild(svgEl('polyline', {
-        points: `${p1x.toFixed(1)},${p1y.toFixed(1)} ${p2x.toFixed(1)},${p2y.toFixed(1)} ${p3x.toFixed(1)},${p3y.toFixed(1)}`,
-        fill: 'none',
-        stroke: pal.perpColor,
-        'stroke-width': '2'
-      }));
-      const dotInSqX = tcX + dirSign * (sqSize * 0.45) * cosA + (sqSize * 0.45) * sinA;
-      const dotInSqY = railMidY + dirSign * (sqSize * 0.45) * sinA - (sqSize * 0.45) * cosA;
-      layers.lines.appendChild(svgEl('circle', {
-        cx: dotInSqX, cy: dotInSqY, r: 1.8, fill: pal.perpColor
-      }));
-
-      const pcProjRailX = pcZeroX;
-      const pcProjRailY = railMidY + (pcProjRailX - tcX) * Math.tan(tiltAngle);
-
-      if (calc.effectiveSe > 0) {
-        layers.lines.appendChild(svgEl('line', {
-          x1: pcZeroX, y1: pcZeroY,
-          x2: pcProjRailX, y2: pcProjRailY,
-          stroke: pal.dotColor,
-          'stroke-width': '2.4',
-          'stroke-dasharray': '1.5 5',
-          'stroke-linecap': 'round'
-        }));
-
-        layers.lines.appendChild(svgEl('circle', {
-          cx: pcProjRailX, cy: pcProjRailY, r: 3.8,
-          fill: pal.dotColor, stroke: pal.boxBg, 'stroke-width': '1.2'
-        }));
-      }
-
-      // PANTOGRAPH & CONTACT WIRE
-      const pantoGroup = svgEl('g', {
-        transform: `translate(${pcZeroX.toFixed(2)}, ${pcZeroY.toFixed(2)}) rotate(${((tiltAngle * 180) / Math.PI).toFixed(3)})`
-      });
-
-      const panHalfW = 185;
-      pantoGroup.appendChild(svgEl('line', { x1: -55, y1: 6, x2: -32, y2: 26, stroke: pal.pantoStroke, 'stroke-width': '2.2' }));
-      pantoGroup.appendChild(svgEl('line', { x1: 55, y1: 6, x2: 32, y2: 26, stroke: pal.pantoStroke, 'stroke-width': '2.2' }));
-      pantoGroup.appendChild(svgEl('line', { x1: -45, y1: 16, x2: 45, y2: 16, stroke: pal.pantoStroke, 'stroke-width': '1.8' }));
-
-      const panPath = `
-        M ${-panHalfW - 22},24
-        Q ${-panHalfW - 14},3 ${-panHalfW},2
-        L ${panHalfW},2
-        Q ${panHalfW + 14},3 ${panHalfW + 22},24
-        L ${panHalfW + 16},26
-        Q ${panHalfW + 9},9 ${panHalfW - 2},8
-        L ${-panHalfW + 2},8
-        Q ${-panHalfW - 9},9 ${-panHalfW - 16},26
-        Z
-      `;
-      pantoGroup.appendChild(svgEl('path', {
-        d: panPath.trim(),
-        fill: pal.pantoFill,
-        stroke: pal.pantoStroke,
-        'stroke-width': '1.6',
-        'stroke-linejoin': 'round'
-      }));
-
-      pantoGroup.appendChild(svgEl('rect', {
-        x: -panHalfW + 6, y: -2, width: (panHalfW - 6) * 2, height: 4, rx: 1,
-        fill: '#0284c7', stroke: pal.pantoStroke, 'stroke-width': '0.8'
-      }));
-
-      layers.panto.appendChild(pantoGroup);
-
-      layers.panto.appendChild(svgEl('circle', {
-        cx: pcZeroX, cy: pcZeroY, r: 5.5,
-        fill: pal.boxBg, stroke: pal.pcColor, 'stroke-width': '2.2'
-      }));
-      layers.panto.appendChild(svgEl('text', {
-        x: pcZeroX + (pantoCenterDir >= 0 ? 11 : -11),
-        y: pcZeroY - 8,
-        'text-anchor': pantoCenterDir >= 0 ? 'start' : 'end',
-        fill: pal.pcColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '13', 'font-weight': '800'
-      }, '0 (P℄)'));
-
-      const cwX = tcX - state.mVal * hScale;
-      const cwPanContactY = (pcZeroY - 2 * cosA) + (cwX - pcZeroX) * Math.tan(tiltAngle);
-      const wireRadius = 6.5;
-      const cwCenterY = cwPanContactY - wireRadius;
-      const cwSleeperY = railMidY + (cwX - tcX) * Math.tan(tiltAngle);
-
-      layers.lines.appendChild(svgEl('line', {
-        x1: cwX, y1: cwCenterY,
-        x2: cwX, y2: cwSleeperY + 28,
-        stroke: pal.plumbColor,
-        'stroke-width': '2.2',
-        'stroke-dasharray': '5 3'
-      }));
-
-      layers.panto.appendChild(svgEl('circle', {
-        cx: cwX, cy: cwCenterY, r: wireRadius,
-        fill: pal.wireFill, stroke: pal.wireStroke, 'stroke-width': '2.2'
-      }));
-
-      layers.panto.appendChild(svgEl('text', {
-        x: cwX, y: cwCenterY - 14, 'text-anchor': 'middle',
-        fill: pal.ink, 'font-family': 'JetBrains Mono, monospace', 'font-size': '12', 'font-weight': '700'
-      }, 'CONTACT WIRE'));
-
-      layers.panto.appendChild(svgEl('circle', {
-        cx: cwX, cy: cwSleeperY, r: 4.8,
-        fill: pal.plumbColor, stroke: pal.ink, 'stroke-width': '1.4'
-      }));
-      layers.panto.appendChild(svgEl('text', {
-        x: cwX - 8, y: cwSleeperY - 10, 'text-anchor': 'end',
-        fill: pal.plumbColor, 'font-family': 'JetBrains Mono, monospace', 'font-size': '12.5', 'font-weight': '800'
-      }, 'Cw'));
-
-      // DIMENSIONS
-      const topDimY1 = Math.min(cwCenterY, pcZeroY) - 34;
-      const topDimY2 = topDimY1 - 28;
-
-      if (calc.effectiveSe > 0 && Math.abs(pcZeroX - tcX) > 2) {
-        drawHorizontalDim(
-          layers.dims,
-          tcX, pcZeroX, topDimY1,
-          tcTopY + 10, pcZeroY - 8,
-          `Sd = ${calc.sdRounded} mm`,
-          pal.pcColor,
-          'arrowBlueStart', 'arrowBlueEnd',
-          -7, bp
-        );
-      }
-
-      drawHorizontalDim(
-        layers.dims,
-        pcZeroX, cwX, topDimY2,
-        pcZeroY - 12, cwCenterY - 8,
-        `STAGGER = ${fmtSigned(calc.existingStagger)} mm`,
-        '#059669',
-        'arrowEmeraldStart', 'arrowEmeraldEnd',
-        -7, bp
-      );
-
-      // 1. GROUND LEVEL DIMENSIONS (OFFSET TO PREVENT ±M & Sd OVERLAP)
-      const botDimY1 = Math.max(cwSleeperY, railMidY, pcProjRailY) + 42;
-      const botDimY2 = botDimY1 + 32;
-      const botDimY3 = botDimY2 + 32;
-
-      drawHorizontalDim(
-        layers.dims,
-        tcX, cwX, botDimY1,
-        railMidY + 6, cwSleeperY + 6,
-        `±M = ${fmtSigned(state.mVal)} mm`,
-        pal.plumbColor,
-        'arrowAmberStart', 'arrowAmberEnd',
-        -6, bp
-      );
-
-      if (calc.effectiveSe > 0 && Math.abs(pcProjRailX - tcX) > 2) {
-        drawHorizontalDim(
-          layers.dims,
-          tcX, pcProjRailX, botDimY2,
-          railMidY + 6, pcProjRailY + 6,
-          `Sd = ${calc.sdRounded} mm`,
-          pal.pcColor,
-          'arrowBlueStart', 'arrowBlueEnd',
-          -6, bp
-        );
-      }
-
-      drawHorizontalDim(
-        layers.dims,
-        pcProjRailX, cwX, calc.effectiveSe > 0 ? botDimY3 : botDimY2,
-        pcProjRailY + 6, cwSleeperY + 28,
-        `EXISTING STAGGER = ${fmtSigned(calc.existingStagger)} mm`,
-        '#059669',
-        'arrowEmeraldStart', 'arrowEmeraldEnd',
-        -6, bp
-      );
-
-      // Vertical Contact Wire Height
-      const hcwDimX = 92;
-      layers.dims.appendChild(svgEl('line', {
-        x1: hcwDimX - 6, y1: cwCenterY, x2: cwX - 16, y2: cwCenterY,
-        stroke: pal.muted, 'stroke-width': '1', 'stroke-dasharray': '4 4'
-      }));
-      layers.dims.appendChild(svgEl('line', {
-        x1: hcwDimX - 6, y1: railMidY, x2: leftRailX - 24, y2: railMidY,
-        stroke: pal.muted, 'stroke-width': '1', 'stroke-dasharray': '4 4'
-      }));
-      layers.dims.appendChild(svgEl('line', {
-        x1: hcwDimX, y1: cwCenterY, x2: hcwDimX, y2: railMidY,
-        stroke: pal.ink, 'stroke-width': '1.6',
-        'marker-start': 'url(#arrowStart)', 'marker-end': 'url(#arrowEnd)'
-      }));
-
-      const hcwMidY = (cwCenterY + railMidY) / 2;
-      layers.dims.appendChild(svgEl('rect', {
-        x: hcwDimX - 48, y: hcwMidY - 18, width: 96, height: 34, rx: 4,
-        fill: pal.boxBg, stroke: pal.boxBorder, 'stroke-width': '1'
-      }));
-      layers.dims.appendChild(svgEl('text', {
-        x: hcwDimX, y: hcwMidY - 3, 'text-anchor': 'middle',
-        fill: pal.ink, 'font-family': 'JetBrains Mono, monospace', 'font-size': '11', 'font-weight': '700'
-      }, `Hcw = ${state.hcw}`));
-      layers.dims.appendChild(svgEl('text', {
-        x: hcwDimX, y: hcwMidY + 11, 'text-anchor': 'middle',
-        fill: pal.muted, 'font-family': 'JetBrains Mono, monospace', 'font-size': '10'
-      }, `(${(state.hcw / 1000).toFixed(2)} m)`));
-
-      // TITLE BLOCK & STAMPS
-      layers.title.appendChild(svgEl('rect', {
-        x: 16, y: 16, width: 245, height: 50, rx: 5,
-        fill: pal.boxBg, stroke: pal.boxBorder, 'stroke-width': '1.2'
-      }));
-      layers.title.appendChild(svgEl('text', {
-        x: 26, y: 34, fill: pal.ink,
-        'font-family': 'JetBrains Mono, monospace', 'font-size': '11', 'font-weight': '700'
-      }, '← (+) AWAY FROM MAST'));
-      layers.title.appendChild(svgEl('text', {
-        x: 26, y: 52, fill: pal.muted,
-        'font-family': 'JetBrains Mono, monospace', 'font-size': '11', 'font-weight': '700'
-      }, '→ (-) TOWARDS MAST'));
-
-      layers.title.appendChild(svgEl('rect', {
-        x: 16, y: 650, width: 350, height: 54, rx: 5,
-        fill: pal.boxBg, stroke: pal.boxBorder, 'stroke-width': '1.2'
-      }));
-      layers.title.appendChild(svgEl('text', {
-        x: 26, y: 670, fill: pal.pcColor,
-        'font-family': 'JetBrains Mono, monospace', 'font-size': '11', 'font-weight': '700'
-      }, `Sd = (${state.hcw}×${calc.effectiveSe})/${state.gauge} = ${calc.sdRounded} mm`));
-      layers.title.appendChild(svgEl('text', {
-        x: 26, y: 690, fill: '#059669',
-        'font-family': 'JetBrains Mono, monospace', 'font-size': '11.5', 'font-weight': '800'
-      }, `STAGGER = (${fmtSigned(state.mVal)}) ${calc.operationSign} ${calc.sdRounded} = ${fmtSigned(calc.existingStagger)} mm`));
-
-      const tbW = 365;
-      const tbH = 74;
-      const tbX = 1000 - tbW - 16;
-      const tbY = 720 - tbH - 16;
-
-      layers.title.appendChild(svgEl('rect', {
-        x: tbX, y: tbY, width: tbW, height: tbH, rx: 4,
-        fill: pal.boxBg, stroke: pal.ink, 'stroke-width': '1.5'
-      }));
-      layers.title.appendChild(svgEl('line', {
-        x1: tbX, y1: tbY + 23, x2: tbX + tbW, y2: tbY + 23,
-        stroke: pal.ink, 'stroke-width': '1'
-      }));
-      layers.title.appendChild(svgEl('line', {
-        x1: tbX, y1: tbY + 45, x2: tbX + tbW, y2: tbY + 45,
-        stroke: pal.ink, 'stroke-width': '1'
-      }));
-
-      layers.title.appendChild(svgEl('text', {
-        x: tbX + 10, y: tbY + 15, fill: pal.ink,
-        'font-family': 'JetBrains Mono, monospace', 'font-size': '10', 'font-weight': '800'
-      }, 'OHE CONTACT WIRE STAGGER & CANT CROSS-SECTION'));
-
-      layers.title.appendChild(svgEl('text', {
-        x: tbX + 10, y: tbY + 37, fill: pal.pcColor,
-        'font-family': 'JetBrains Mono, monospace', 'font-size': '10.5', 'font-weight': '700'
-      }, `LOC: ${state.section} | ${state.line} | MAST ${state.mast}`));
-
-      layers.title.appendChild(svgEl('text', {
-        x: tbX + 10, y: tbY + 62, fill: pal.ink,
-        'font-family': 'JetBrains Mono, monospace', 'font-size': '10.5', 'font-weight': '700'
-      }, 'Created by: Sandeep Mushini | SSE/TRD/IDR/UBL/SWR'));
-    }
-
-    function bindEvents() {
-      els.inpSection.addEventListener('input', e => { state.section = e.target.value; renderAll(); });
-      els.inpLine.addEventListener('input', e => { state.line = e.target.value; renderAll(); });
-      els.inpMast.addEventListener('input', e => { state.mast = e.target.value; renderAll(); });
-
-      const syncPair = (numEl, rngEl, key, min, max) => {
-        numEl.addEventListener('input', e => {
-          let v = parseFloat(e.target.value);
-          if (isNaN(v)) return;
-          v = Math.max(min, Math.min(max, v));
-          state[key] = v;
-          rngEl.value = v;
-          renderAll();
-        });
-        rngEl.addEventListener('input', e => {
-          const v = parseFloat(e.target.value);
-          state[key] = v;
-          numEl.value = v;
-          renderAll();
-        });
-      };
-
-      syncPair(els.inpSe, els.rngSe, 'se', 0, 165);
-      syncPair(els.inpHcw, els.rngHcw, 'hcw', 4500, 7600);
-      syncPair(els.inpM, els.rngM, 'mVal', -600, 600);
-
-      els.inpTarget.addEventListener('input', e => {
-        const v = parseFloat(e.target.value);
-        if (!isNaN(v)) {
-          state.targetStagger = v;
-          renderAll();
-        }
-      });
-
-      document.querySelectorAll('.mast-side-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          state.mastSide = btn.dataset.mastSide;
-          document.querySelectorAll('.mast-side-btn').forEach(b => {
-            b.className = 'mast-side-btn py-1.5 px-2 rounded-md text-xs font-semibold transition text-slate-600 hover:bg-white';
-          });
-          btn.className = 'mast-side-btn py-1.5 px-2 rounded-md text-xs font-semibold transition bg-sky-600 text-white shadow-sm';
-          renderAll();
-        });
-      });
-
-      document.querySelectorAll('.gauge-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          state.gauge = parseInt(btn.dataset.gauge, 10);
-          document.querySelectorAll('.gauge-btn').forEach(b => {
-            b.className = 'gauge-btn py-1.5 px-2.5 rounded-lg text-xs font-mono font-semibold border transition bg-white border-slate-300 text-slate-600 hover:bg-slate-50';
-          });
-          btn.className = 'gauge-btn py-1.5 px-2.5 rounded-lg text-xs font-mono font-semibold border transition bg-sky-50 border-sky-500 text-sky-800';
-          renderAll();
-        });
-      });
-
-      els.btnSheetTheme.addEventListener('click', () => {
-        state.blueprintMode = !state.blueprintMode;
-        if (state.blueprintMode) {
-          els.canvasWrapper.classList.remove('cad-grid-light');
-          els.canvasWrapper.classList.add('cad-grid-blueprint');
-          els.themeDot.className = 'w-2.5 h-2.5 rounded-full bg-sky-400 border border-sky-200';
-          els.themeLabel.textContent = 'CAD Sheet: Blueprint';
-        } else {
-          els.canvasWrapper.classList.remove('cad-grid-blueprint');
-          els.canvasWrapper.classList.add('cad-grid-light');
-          els.themeDot.className = 'w-2.5 h-2.5 rounded-full bg-white border border-slate-400';
-          els.themeLabel.textContent = 'CAD Sheet: White';
-        }
-        renderAll();
-      });
-
-      els.btnExaggeration.addEventListener('click', () => {
-        state.tiltExaggeration = state.tiltExaggeration === 4 ? 1 : 4;
-        els.tiltScaleLabel.textContent = state.tiltExaggeration === 4 ? '4× Clarity' : '1× True Scale';
-        renderAll();
-      });
-
-      els.btnResetPreset.addEventListener('click', () => {
-        state.section = 'Bheema Bridge';
-        state.line = 'UP Line';
-        state.mast = '257/03';
-        state.mastSide = 'inside';
-        state.gauge = 1676;
-        state.se = 52;
-        state.hcw = 5340;
-        state.mVal = 133;
-        state.targetStagger = 300;
-
-        els.inpSection.value = state.section;
-        els.inpLine.value = state.line;
-        els.inpMast.value = state.mast;
-        els.inpSe.value = state.se;
-        els.rngSe.value = state.se;
-        els.inpHcw.value = state.hcw;
-        els.rngHcw.value = state.hcw;
-        els.inpM.value = state.mVal;
-        els.rngM.value = state.mVal;
-        els.inpTarget.value = state.targetStagger;
-
-        document.querySelectorAll('.mast-side-btn').forEach(b => {
-          b.className = b.dataset.mastSide === 'inside'
-            ? 'mast-side-btn py-1.5 px-2 rounded-md text-xs font-semibold transition bg-sky-600 text-white shadow-sm'
-            : 'mast-side-btn py-1.5 px-2 rounded-md text-xs font-semibold transition text-slate-600 hover:bg-white';
-        });
-        document.querySelectorAll('.gauge-btn').forEach(b => {
-          b.className = b.dataset.gauge === '1676'
-            ? 'gauge-btn py-1.5 px-2.5 rounded-lg text-xs font-mono font-semibold border transition bg-sky-50 border-sky-500 text-sky-800'
-            : 'gauge-btn py-1.5 px-2.5 rounded-lg text-xs font-mono font-semibold border transition bg-white border-slate-300 text-slate-600 hover:bg-slate-50';
-        });
-
-        renderAll();
-        showToast('Restored Bheema Bridge UP Line Mast 257/03 preset.');
-      });
-
-      els.btnDownloadPDF.addEventListener('click', () => {
+      function renderAll() {
         try {
-          const printWin = window.open('', '_blank');
-          if (!printWin) {
-            showToast('Allow pop-ups to export PDF.');
-            return;
-          }
+          const { se, hcw, g, m, sdExact, sd, stagger } = compute();
 
-          // Clone the full visible page (header, sidebar, canvas, legend, footer)
-          const pageClone = document.documentElement.cloneNode(true);
+          el('sdVal').textContent = fmtSigned(sd);
+          el('sdSub').textContent = `Exact: ${sdExact.toFixed(2)} mm (${g} mm G)`;
+          el('stagVal').textContent = fmtSigned(stagger);
+          el('stagSub').textContent = Math.abs(stagger) <= 300 ? 'Within ±300 mm ref' : 'Outside ±300 mm ref';
+          el('staggerStatus').textContent = Math.abs(stagger) <= 300 ? 'OK' : 'CHECK';
 
-          // Strip toolbar action buttons and toast box from the printed page
-          pageClone.querySelectorAll('#toastBox').forEach(el => el.remove());
-          const toolbar = pageClone.querySelector('header .flex.flex-wrap.items-center.gap-2:last-child');
-          if (toolbar) toolbar.remove();
+          const signRuleText =
+            state.pos === 'outside'
+              ? 'Mast on OUTSIDE curve: Existing Stagger = (±M) − Sd'
+              : 'Mast on INSIDE/TANGENT: Existing Stagger = (±M) + Sd';
 
-          const printCss = `
-            <style>
-              @page { size: A4; margin: 6mm; }
-              html, body {
-                width: 100% !important;
-                height: auto !important;
-                min-height: 0 !important;
-                overflow: visible !important;
-                background: #fff !important;
-              }
-              body {
-                transform: scale(0.72);
-                transform-origin: top left;
-                width: 138.9% !important;
-              }
-              main { gap: 10px !important; }
-              .min-h-\\[540px\\], .sm\\:min-h-\\[620px\\] { min-height: 460px !important; }
-              * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            </style>
+          el('calcSteps').innerHTML = `
+            <div><strong>1. Panto Shift (Sd):</strong> ((${hcw} + ${se}) / ${g}) × ${se} = ${sdExact.toFixed(2)} mm ≈ <strong>${fmtSigned(sd)}</strong></div>
+            <div><strong>2. Plumb Measure (±M):</strong> <strong>${fmtSigned(m)}</strong> (${m >= 0 ? 'Away from mast (+)' : 'Towards mast (-)'})</div>
+            <div><strong>3. Resultant Stagger:</strong> ${signRuleText} = <strong>${fmtSigned(stagger)}</strong></div>
           `;
 
-          const headHtml = pageClone.querySelector('head').innerHTML;
-          const bodyHtml = pageClone.querySelector('body').innerHTML;
-
-          printWin.document.open();
-          printWin.document.write(
-            '<!DOCTYPE html><html><head>' + headHtml + printCss + '</head><body>' + bodyHtml + '</body></html>'
-          );
-          printWin.document.close();
-
-          printWin.onload = () => {
-            setTimeout(() => {
-              printWin.focus();
-              printWin.print();
-            }, 400);
-          };
-
-          showToast('Opening single-page PDF export…');
+          drawCad({ se, hcw, g, m, sd, stagger });
         } catch (err) {
-          showToast('PDF export failed.');
+          console.error('Render error:', err);
         }
-      });
+      }
 
-      els.btnDownloadPNG.addEventListener('click', () => {
-        try {
+      function drawCad({ se, hcw, g, m, sd, stagger }) {
+        const svg = el('cadSvg');
+        const dark = state.darkSheet;
+        const bg = dark ? '#0b192c' : '#ffffff';
+        const gridStroke = dark ? 'rgba(148,163,184,0.12)' : 'rgba(15,23,42,0.06)';
+        const ink = dark ? '#f1f5f9' : '#0f172a';
+        const subInk = dark ? '#94a3b8' : '#475569';
+        const pillBg = dark ? '#1e293b' : '#f8fafc';
+
+        const tiltRad = Math.atan((se * state.cantScale) / g) * (state.pos === 'outside' ? -1 : 1);
+        const railY = 470;
+        const centerX = 520;
+        const pxPerMm = 0.42;
+
+        const cwX = centerX + m * pxPerMm;
+        const pantoTiltShiftPx = Math.tan(tiltRad) * (hcw * 0.032);
+        const pcX = centerX + pantoTiltShiftPx;
+        const mastX = state.pos === 'outside' ? 185 : 885;
+
+        const cwY = 235;
+        const railLeftX = centerX - 190;
+        const railRightX = centerX + 190;
+        const railLeftY = railY - Math.tan(tiltRad) * 190;
+        const railRightY = railY + Math.tan(tiltRad) * 190;
+
+        const dimM_Y = 535;
+        const dimSd_Y = 572;
+        const dimStag_Y = 175;
+
+        let gridLines = '';
+        for (let x = 40; x < 1080; x += 40) {
+          gridLines += `<line x1="${x}" y1="20" x2="${x}" y2="640" stroke="${gridStroke}" stroke-width="1" />`;
+        }
+        for (let y = 40; y < 640; y += 40) {
+          gridLines += `<line x1="20" y1="${y}" x2="1080" y2="${y}" stroke="${gridStroke}" stroke-width="1" />`;
+        }
+
+        svg.innerHTML = `
+          <rect x="0" y="0" width="1100" height="660" fill="${bg}" />
+          ${gridLines}
+
+          <!-- Header & Loc Block (Top-Left) -->
+          <text x="32" y="38" fill="${ink}" font-family="Chakra Petch, sans-serif" font-size="18" font-weight="700">
+            OHE CONTACT WIRE STAGGER &amp; CANT CROSS-SECTION
+          </text>
+          <text x="32" y="60" fill="${subInk}" font-family="Inter, sans-serif" font-size="12.5" font-weight="600">
+            Loc: ${escapeXml(state.bridge)} | ${escapeXml(state.line)} | Mast ${escapeXml(state.mast)} | + Away / - Towards Mast
+          </text>
+
+          <!-- Track Centre Line (T℄) -->
+          <line x1="${centerX}" y1="130" x2="${centerX}" y2="595" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="14,5,3,5" />
+          <text x="${centerX + 6}" y="146" fill="#dc2626" font-family="Chakra Petch, sans-serif" font-size="12" font-weight="700">T℄</text>
+
+          <!-- Inclined Rail Level -->
+          <line x1="${railLeftX}" y1="${railLeftY.toFixed(1)}" x2="${railRightX}" y2="${railRightY.toFixed(1)}" stroke="#0284c7" stroke-width="2.5" />
+          <rect x="${centerX - 155}" y="${(railY - 12).toFixed(1)}" width="310" height="14" rx="3" fill="#334155" transform="rotate(${(tiltRad * 180 / Math.PI).toFixed(2)} ${centerX} ${railY})" />
+          <text x="${railLeftX}" y="${(railLeftY - 10).toFixed(1)}" fill="#0284c7" font-family="Inter, sans-serif" font-size="11.5" font-weight="700">Inclined Rail Level (Se=${se} mm)</text>
+
+          <!-- Contact Wire Plumb Line -->
+          <line x1="${cwX.toFixed(1)}" y1="${cwY}" x2="${cwX.toFixed(1)}" y2="555" stroke="#d97706" stroke-width="1.6" stroke-dasharray="6,4" />
+          <circle cx="${cwX.toFixed(1)}" cy="${cwY}" r="5.5" fill="#f59e0b" stroke="${ink}" stroke-width="1.5" />
+          <text x="${(cwX - 14).toFixed(1)}" y="${cwY - 12}" fill="#d97706" font-family="Chakra Petch, sans-serif" font-size="12" font-weight="700">Cw</text>
+
+          <!-- Pantograph Centre Line (P℄) & Upright Pantograph -->
+          <line x1="${pcX.toFixed(1)}" y1="155" x2="${pcX.toFixed(1)}" y2="590" stroke="#7c3aed" stroke-width="1.6" stroke-dasharray="7,4" />
+          <text x="${(pcX + 6).toFixed(1)}" y="168" fill="#7c3aed" font-family="Chakra Petch, sans-serif" font-size="12" font-weight="700">P℄</text>
+
+          <!-- Upright Pantograph Collector Head & Articulated Arms -->
+          <g transform="translate(${pcX.toFixed(1)}, ${cwY}) rotate(${(tiltRad * 180 / Math.PI * 0.6).toFixed(2)})">
+            <line x1="-68" y1="0" x2="68" y2="0" stroke="#0284c7" stroke-width="5" stroke-linecap="round" />
+            <path d="M -68 0 Q -78 0 -80 8" fill="none" stroke="#0284c7" stroke-width="3" />
+            <path d="M 68 0 Q 78 0 80 8" fill="none" stroke="#0284c7" stroke-width="3" />
+            <polyline points="-34,2 -10,34 10,34 34,2" fill="none" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round" />
+            <line x1="-18" y1="18" x2="18" y2="18" stroke="${ink}" stroke-width="2" />
+          </g>
+
+          <!-- Field-Accurate OHE Mast Only (No Stay/Bracket Tube) -->
+          <g id="oheMast">
+            <rect x="${mastX - 18}" y="495" width="36" height="24" fill="#64748b" stroke="${ink}" stroke-width="1.5" />
+            <rect x="${mastX - 8}" y="95" width="16" height="400" fill="#475569" stroke="${ink}" stroke-width="1.5" />
+            <rect x="${mastX - 24}" y="265" width="48" height="36" rx="4" fill="#1d4ed8" stroke="${ink}" stroke-width="1.5" />
+            <text x="${mastX}" y="280" text-anchor="middle" fill="#facc15" font-family="Chakra Petch, sans-serif" font-size="11" font-weight="700">${escapeXml(state.mast.split('/')[0] || '257')}</text>
+            <line x1="${mastX - 18}" y1="284" x2="${mastX + 18}" y2="284" stroke="#facc15" stroke-width="1.2" />
+            <text x="${mastX}" y="296" text-anchor="middle" fill="#facc15" font-family="Chakra Petch, sans-serif" font-size="11" font-weight="700">${escapeXml(state.mast.split('/')[1] || '03')}</text>
+          </g>
+
+          <!-- Dimension Tier 1 (Top): EXISTING STAGGER -->
+          <line x1="${pcX.toFixed(1)}" y1="${dimStag_Y}" x2="${cwX.toFixed(1)}" y2="${dimStag_Y}" stroke="#059669" stroke-width="1.6" />
+          <line x1="${pcX.toFixed(1)}" y1="${dimStag_Y - 6}" x2="${pcX.toFixed(1)}" y2="${dimStag_Y + 6}" stroke="#059669" stroke-width="1.4" />
+          <line x1="${cwX.toFixed(1)}" y1="${dimStag_Y - 6}" x2="${cwX.toFixed(1)}" y2="${dimStag_Y + 6}" stroke="#059669" stroke-width="1.4" />
+          <rect x="${((pcX + cwX) / 2 - 78).toFixed(1)}" y="${dimStag_Y - 22}" width="156" height="18" rx="4" fill="${pillBg}" stroke="#059669" stroke-width="1" />
+          <text x="${((pcX + cwX) / 2).toFixed(1)}" y="${dimStag_Y - 9}" text-anchor="middle" fill="#059669" font-family="Chakra Petch, sans-serif" font-size="11.5" font-weight="700">
+            STAGGER: ${fmtSigned(stagger)}
+          </text>
+
+          <!-- Dimension Tier 2 (Bottom Upper): ±M -->
+          <line x1="${centerX}" y1="${dimM_Y}" x2="${cwX.toFixed(1)}" y2="${dimM_Y}" stroke="#d97706" stroke-width="1.6" />
+          <line x1="${centerX}" y1="${dimM_Y - 6}" x2="${centerX}" y2="${dimM_Y + 6}" stroke="#d97706" stroke-width="1.4" />
+          <line x1="${cwX.toFixed(1)}" y1="${dimM_Y - 6}" x2="${cwX.toFixed(1)}" y2="${dimM_Y + 6}" stroke="#d97706" stroke-width="1.4" />
+          <rect x="${((centerX + cwX) / 2 - 54).toFixed(1)}" y="${dimM_Y - 22}" width="108" height="18" rx="4" fill="${pillBg}" stroke="#d97706" stroke-width="1" />
+          <text x="${((centerX + cwX) / 2).toFixed(1)}" y="${dimM_Y - 9}" text-anchor="middle" fill="#d97706" font-family="Chakra Petch, sans-serif" font-size="11.5" font-weight="700">
+            ±M: ${fmtSigned(m)}
+          </text>
+
+          <!-- Dimension Tier 3 (Bottom Lower): Sd -->
+          <line x1="${centerX}" y1="${dimSd_Y}" x2="${pcX.toFixed(1)}" y2="${dimSd_Y}" stroke="#7c3aed" stroke-width="1.6" />
+          <line x1="${centerX}" y1="${dimSd_Y - 6}" x2="${centerX}" y2="${dimSd_Y + 6}" stroke="#7c3aed" stroke-width="1.4" />
+          <line x1="${pcX.toFixed(1)}" y1="${dimSd_Y - 6}" x2="${pcX.toFixed(1)}" y2="${dimSd_Y + 6}" stroke="#7c3aed" stroke-width="1.4" />
+          <rect x="${((centerX + pcX) / 2 - 54).toFixed(1)}" y="${dimSd_Y + 6}" width="108" height="18" rx="4" fill="${pillBg}" stroke="#7c3aed" stroke-width="1" />
+          <text x="${((centerX + pcX) / 2).toFixed(1)}" y="${dimSd_Y + 19}" text-anchor="middle" fill="#7c3aed" font-family="Chakra Petch, sans-serif" font-size="11.5" font-weight="700">
+            Sd: ${fmtSigned(sd)}
+          </text>
+
+          <!-- Bottom-Right Credit Stamp -->
+          <text x="1068" y="642" text-anchor="end" fill="${subInk}" font-family="Inter, sans-serif" font-size="11.5" font-weight="600">
+            Created by Sandeep Mushini | SSE / TRD / IDR / UBL / SWR
+          </text>
+        `;
+      }
+
+      function escapeXml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function syncInputs() {
+        el('seInput').value = state.se;
+        el('seRange').value = state.se;
+        el('hcwInput').value = state.hcw;
+        el('hcwRange').value = state.hcw;
+        el('mInput').value = state.m;
+        el('mRange').value = state.m;
+        el('locBridge').value = state.bridge;
+        el('locLine').value = state.line;
+        el('locMast').value = state.mast;
+      }
+
+      function bindEvents() {
+        el('locBridge').addEventListener('input', (e) => { state.bridge = e.target.value; renderAll(); });
+        el('locLine').addEventListener('input', (e) => { state.line = e.target.value; renderAll(); });
+        el('locMast').addEventListener('input', (e) => { state.mast = e.target.value; renderAll(); });
+
+        const linkPair = (numId, rngId, key) => {
+          el(numId).addEventListener('input', (e) => {
+            state[key] = Number(e.target.value) || 0;
+            el(rngId).value = state[key];
+            renderAll();
+          });
+          el(rngId).addEventListener('input', (e) => {
+            state[key] = Number(e.target.value) || 0;
+            el(numId).value = state[key];
+            renderAll();
+          });
+        };
+
+        linkPair('seInput', 'seRange', 'se');
+        linkPair('hcwInput', 'hcwRange', 'hcw');
+        linkPair('mInput', 'mRange', 'm');
+
+        el('mastPosGroup').addEventListener('click', (e) => {
+          const btn = e.target.closest('.seg-btn');
+          if (!btn) return;
+          el('mastPosGroup').querySelectorAll('.seg-btn').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.pos = btn.dataset.pos;
+          renderAll();
+        });
+
+        el('gaugeGroup').addEventListener('click', (e) => {
+          const btn = e.target.closest('.seg-btn');
+          if (!btn) return;
+          el('gaugeGroup').querySelectorAll('.seg-btn').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.gauge = Number(btn.dataset.gauge) || 1676;
+          renderAll();
+        });
+
+        el('sheetToggleBtn').addEventListener('click', () => {
+          state.darkSheet = !state.darkSheet;
+          el('sheetToggleBtn').textContent = state.darkSheet ? 'CAD Sheet: Dark' : 'CAD Sheet: White';
+          renderAll();
+        });
+
+        el('scaleToggleBtn').addEventListener('click', () => {
+          state.cantScale = state.cantScale === 4 ? 1 : 4;
+          el('scaleToggleBtn').textContent =
+            state.cantScale === 4 ? 'Cant Tilt Scale: 4x Clarity' : 'Cant Tilt Scale: 1x True';
+          renderAll();
+        });
+
+        el('resetBtn').addEventListener('click', () => {
+          state.bridge = 'Bheema Bridge';
+          state.line = 'UP Line';
+          state.mast = '257/03';
+          state.pos = 'inside';
+          state.gauge = 1676;
+          state.se = 52;
+          state.hcw = 5340;
+          state.m = 133;
+          state.cantScale = 4;
+          el('mastPosGroup').querySelectorAll('.seg-btn').forEach((b) =>
+            b.classList.toggle('active', b.dataset.pos === 'inside')
+          );
+          el('gaugeGroup').querySelectorAll('.seg-btn').forEach((b) =>
+            b.classList.toggle('active', b.dataset.gauge === '1676')
+          );
+          el('scaleToggleBtn').textContent = 'Cant Tilt Scale: 4x Clarity';
+          syncInputs();
+          renderAll();
+        });
+
+        el('exportPngBtn').addEventListener('click', () => {
+          const svgEl = el('cadSvg');
           const serializer = new XMLSerializer();
-          const svgStr = serializer.serializeToString(els.cadSvg);
+          const svgStr = serializer.serializeToString(svgEl);
           const svgBlob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
           const url = URL.createObjectURL(svgBlob);
           const img = new Image();
           img.onload = () => {
+            const legendHeight = 96;
             const canvas = document.createElement('canvas');
-            canvas.width = 2000;
-            canvas.height = 1440;
+            canvas.width = 1100;
+            canvas.height = 660 + legendHeight;
             const ctx = canvas.getContext('2d');
-            ctx.fillStyle = state.blueprintMode ? '#0b192c' : '#ffffff';
+            ctx.fillStyle = state.darkSheet ? '#0b192c' : '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            URL.revokeObjectURL(url);
+            ctx.drawImage(img, 0, 0, 1100, 660);
 
-            canvas.toBlob(pngBlob => {
-              const pngUrl = URL.createObjectURL(pngBlob);
-              const a = document.createElement('a');
-              a.href = pngUrl;
-              a.download = `OHE_Stagger_${state.mast.replace(/\//g, '-')}.png`;
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(pngUrl);
-              showToast('Exported high-resolution PNG diagram.');
-            }, 'image/png');
+            ctx.fillStyle = state.darkSheet ? '#11223a' : '#f8fafc';
+            ctx.fillRect(24, 666, 1052, 82);
+            ctx.strokeStyle = state.darkSheet ? '#334155' : '#cbd5e1';
+            ctx.strokeRect(24, 666, 1052, 82);
+
+            ctx.fillStyle = state.darkSheet ? '#f8fafc' : '#0f172a';
+            ctx.font = 'bold 13px sans-serif';
+            ctx.fillText('Line Type Assignment Legend', 38, 686);
+
+            const items = [
+              'T℄ — Track Centre Line',
+              'P℄ — Pantograph Centre Line',
+              'Inclined Rail Level',
+              'Perpendicular to Inclined Rail Level',
+              'Contact Wire Plumb Line',
+              'P℄ Plumb Projection'
+            ];
+            ctx.font = '12px sans-serif';
+            items.forEach((txt, idx) => {
+              const col = idx % 3;
+              const row = Math.floor(idx / 3);
+              ctx.fillText(`• ${txt}`, 38 + col * 340, 708 + row * 22);
+            });
+
+            URL.revokeObjectURL(url);
+            const pngUrl = canvas.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = pngUrl;
+            a.download = `OHE_Stagger_${(state.mast || '257_03').replace(/[^a-zA-Z0-9_-]/g, '_')}.png`;
+            a.click();
           };
           img.src = url;
-        } catch (err) {
-          showToast('PNG export failed.');
-        }
-      });
-    }
+        });
 
-    window.addEventListener('DOMContentLoaded', () => {
+        el('exportPdfBtn').addEventListener('click', () => {
+          window.print();
+        });
+
+        let deferredInstallPrompt = null;
+        const installBtn = el('installAppBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredInstallPrompt = e;
+          installBtn.style.display = 'inline-block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+          if (!deferredInstallPrompt) return;
+          deferredInstallPrompt.prompt();
+          await deferredInstallPrompt.userChoice;
+          deferredInstallPrompt = null;
+          installBtn.style.display = 'none';
+        });
+
+        window.addEventListener('appinstalled', () => {
+          deferredInstallPrompt = null;
+          installBtn.style.display = 'none';
+        });
+
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').catch(() => {});
+          });
+        }
+      }
+
       bindEvents();
       renderAll();
-    });
-
-    // PWA: register service worker for installability and offline use
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(() => {
-          // Offline/installable features simply won't be available; app still works normally.
-        });
-      });
-    }
+    })();
   </script>
 </body>
 </html>
